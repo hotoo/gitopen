@@ -1,6 +1,6 @@
 {
   "name": "gitopen",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Open Remote from Browser.",
   "main": "index.js",
   "bin": {
