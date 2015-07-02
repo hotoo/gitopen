@@ -1,0 +1,31 @@
+{
+  "name": "gitopen",
+  "version": "0.0.0",
+  "description": "Open Remote from Browser.",
+  "main": "index.js",
+  "bin": {
+    "gitopen": "bin/gitopen"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hotoo/gitopen.git"
+  },
+  "keywords": [
+    "git",
+    "open",
+    "browser",
+    "remote"
+  ],
+  "author": "闲耘 <hotoo.cn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hotoo/gitopen/issues"
+  },
+  "homepage": "https://github.com/hotoo/gitopen",
+  "dependencies": {
+    "commander": "^2.8.1"
+  }
+}
