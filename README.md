@@ -9,7 +9,7 @@ Support:
 * [ ] [GitLab](https://gitlub.com/)
 * [ ] [BitBucket](https://bitbucket.org/)
 * [ ] [GitCafe](https://gitcafe.com/)
-* [ ] [OSC](http://git.oschina.net/)
+* [ ] [OSC](https://git.oschina.net/)
 * [ ] Custom
 
 ## Install
