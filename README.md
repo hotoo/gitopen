@@ -3,6 +3,21 @@
 
 Open git remote from browser.
 
+Support:
+
+* [X] [GitHub](https://github.com/)
+* [ ] [GitLab](https://gitlub.com/)
+* [ ] [BitBucket](https://bitbucket.org/)
+* [ ] [GitCafe](https://gitcafe.com/)
+* [ ] [OSC](http://git.oschina.net/)
+* [ ] Custom
+
+## Install
+
+```
+$ npm install -g gitopen
+```
+
 ## Usage
 
 ```
