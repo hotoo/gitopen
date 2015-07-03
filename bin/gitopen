@@ -10,92 +10,121 @@ commander
   .version(require('../package.json').version)
   .option('-p, --path <path>', 'CWD path')
   .option('-b, --branch <branch-name>', 'Goto branch in browser')
-  .option('-r, --remote <remote-name>', 'Goto remote in browser')
+  .option('-r, --remote <remote-name>', 'Goto remote in browser, default is `origin`.')
   .option('-v, --verbose', 'Print verbose information.')
   .parse(process.argv);
+
+var options = {
+  category: 'default',
+  cwd: commander.path || process.cwd(),
+  hash: commander.branch || 'master',
+  remote: commander.remote || 'origin',
+};
 
 var RE_ISSUE_ID = /^#\d+$/;
 var RE_BRANCH_COMPARE = /^(\w+)?:(\w+)?$/;
 
 var category = commander.args[0];
-var cwd = commander.path || process.cwd();
-var remoteName = commander.remote || 'origin';
-var branch = '';
-var subpath = '';
 var match;
-
-function getCurrentBranch(cwd) {
-  return child_process.execSync('git symbolic-ref --short HEAD', {cwd: cwd})
-          .toString().trim();
-}
 
 switch(category){
 case 'issue':
 case 'issues':
-  subpath = '/issues';
+  options.category = 'issues';
   if (commander.args[1] === 'new') {
-    subpath += '/new';
+    options.category = 'issues/new';
+    if (commander.args[2]) {
+      options.category = 'issues/new-with-title';
+      options.args = {
+        title: commander.args[2]
+      };
+    }
   }
   break;
 case 'pr':
 case 'mr':
 case 'pull':
 case 'pulls':
-  subpath = '/pulls';
+  options.category = 'pulls';
   if (commander.args[1] === 'new') {
-    subpath = '/compare';
+    options.category = 'pulls/new';
   } else if (match = RE_BRANCH_COMPARE.exec(commander.args[1])) {
-    subpath = '/compare/' + (match[1] || 'master') + '...' + (match[2] || getCurrentBranch(cwd));
+    options.category = 'pulls/new-with-branch';
+    options.args = {
+      'branch-A': match[1] || 'master',
+      'branch-B': match[2],
+    };
   }
   break;
 case 'wiki':
 case 'wikis':
-  subpath = '/wiki';
+  options.category = 'wiki';
+  break;
+case 'tag':
+case 'tags':
+  options.category = 'tags';
   break;
 case 'milestone':
 case 'milestones':
-  subpath = '/milestones';
+  options.category = 'milestones';
   break;
 case 'release':
 case 'releases':
-  subpath = '/releases';
+  options.category = 'releases';
   if (commander.args[1] === 'new') {
-    subpath += '/new';
+    options.category = 'releases/new'
+    if (commander.args[2]) {
+      options.category = 'releases/new-with-tag';
+      options.args = {
+        tag: commander.args[2],
+      };
+    }
   }
   break;
 case 'network':
-  subpath = '/network';
+  options.category = 'network';
   break;
 case 'ci':
 case 'commit':
 case 'commits':
-  subpath = '/commits';
+  options.category = 'commits';
   if (commander.branch) {
-    subpath += '/' + commander.branch;
+    options.category = 'commits-with-branch';
+    options.args = {
+      hash: commander.branch,
+    };
   }
   break;
-case 'tag':
-case 'tags':
-  subpath = '/tags';
-  break;
 case undefined: // 未指定任何特定信息。
+  options.category = 'home';
   break;
 default:
   if (category.indexOf(':') === 0) {
-    branch = category.substring(1);
+    options.category = 'tree';
+    options.args = {
+      hash: category.substring(1),
+    };
   } else if (RE_ISSUE_ID.test(category)) {
-    branch = '';
-    subpath = '/issues/' + (category.substring(1));
+    options.category = 'issues/id';
+    options.args = {
+      issue_id: category.substring(1),
+    };
   } else {
     // FILE/DIR PATH
     if (fs.existsSync(category)) {
       var stat = fs.statSync(category);
       if (stat.isFile()) {
-        cwd = path.dirname(category);
-        subpath = path.normalize(category);
+        options.category = 'blob';
+        options.args = {
+          cwd: path.dirname(category),
+          file: path.normalize(category),
+        };
       } else if (stat.isDirectory()) {
-        cwd = category;
-        subpath = category;
+        options.category = 'tree';
+        options.args = {
+          cwd: path.resolve(category, options.cwd),
+          subpath: category,
+        };
       }
     } else {
       console.error('Unknow category or path: ' + category);
@@ -103,18 +132,11 @@ default:
     }
   }
 }
-//if (commander.path) {
-  //cwd = path.dirname(path.resolve(cwd, commander.path));
-//}
 
-var url = gitRemote({
-  cwd: cwd,
-  branch: commander.branch || branch,
-  remote: remoteName,
-  path: subpath,
-});
+var url = gitRemote(options);
 
 if (commander.verbose) {
+  console.log('options:', options);
   console.log(url);
 }
 

@@ -13,6 +13,11 @@ function getRemoteUrl(cwd, origin) {
   }
 }
 
+function getCurrentBranch(cwd) {
+  return child_process.execSync('git symbolic-ref --short HEAD', {cwd: cwd})
+          .toString().trim();
+}
+
 var RE_SCP_URL = /^git@/i;
 var RE_GIT_URL = /^git:\/\//i;
 var RE_SSH_URL = /^ssh:\/\//i;
@@ -40,16 +45,105 @@ function resolveGitUrl(uri) {
   }
 }
 
+var RE_GITHUB = /^https:\/\/github\.com\//;
+var RE_GITLIB = /^https:\/\/gitlab\.org\//;
+var RE_BITBUCKET = /^https:\/\/bitbucket\.org\//;
+var RE_GITCAFE = /^https:\/\/gitcafe\.com\//;
+var RE_OSCHINA = /^https:\/\/git\.oschina\.net\//;
+function getRemoteType(url) {
+  if (RE_GITHUB.test(url)) {
+    return 'github';
+  } else if (RE_GITLIB.test(url)) {
+    return 'gitlab';
+  } else if (RE_BITBUCKET.test(url)) {
+    return 'bitbucket';
+  } else if (RE_GITCAFE.test(url)) {
+    return 'gitcafe';
+  } else if (RE_OSCHINA.test(url)) {
+    return 'oschina';
+  }
+}
+
 /* global module, process */
 module.exports = function(options) {
   var cwd = options.cwd || process.cwd();
-  var remote = getRemoteUrl(cwd, 'origin');
+  var remote = getRemoteUrl(cwd, options.remote || 'origin');
   var url = resolveGitUrl(remote);
-  if (options.branch) {
-    url += '/tree/' + options.branch;
+  var type = options.type || getRemoteType(url);
+  var scheme = require('./scheme-' + type);
+  var path = '';
+
+  switch (options.category) {
+    case 'issues':
+      path = scheme.issues;
+      break;
+    case 'issues/id':
+      path = scheme['issues/id']
+              .replace('{issue-id}', options.args.issue_id);
+      break;
+    case 'issues/new':
+      path = scheme['issues/new'];
+      break;
+    case 'issues/new-with-title':
+      path = scheme['issues/new?title'].replace('{title}', options.args.title);
+      break;
+    case 'pulls':
+      path = scheme.pulls;
+      break;
+    case 'pulls/new':
+      path = scheme['pulls/new'];
+      break;
+    case 'pulls/new-with-branch':
+      path = scheme['pulls/new-with-branch']
+                  .replace('{branch-A}', options.args['branch-A'])
+                  .replace('{branch-B}', options.args['branch-B'] || getCurrentBranch(cwd));
+      break;
+    case 'wiki':
+      path = scheme.wiki;
+      break;
+    case 'milestones':
+      path = scheme.milestones;
+      break;
+    case 'tags':
+      path = scheme.tags;
+      break;
+    case 'releases':
+      path = scheme.releases;
+      break;
+    case 'releases/new':
+      path = scheme['releases/new'];
+      break;
+    case 'releases/new-with-tag':
+      path = scheme['releases/new-with-tag']
+                  .replace('{tag}', options.args.tag);
+      break;
+    case 'network':
+      path = scheme.network;
+      break;
+    case 'commits':
+      path = scheme.commits;
+      break;
+    case 'commits-with-branch':
+      path = scheme['commits-with-branch']
+                  .replace('{branch-name}', options.args.branch);
+      break;
+    case 'tree':
+      path = scheme.tree.replace('{hash}', options.args.hash);
+      break;
+    case 'blob':
+      path = scheme.blob.replace('{hash}', options.args.hash);
+      break;
+    case 'home':
+      path = '';
+      if (options.hash !== 'master')  {
+        path = scheme.tree.replace('{hash}', options.hash);
+      }
+      break;
+    default:
+      throw new Error('Unknow category %s', options.category);
   }
-  if (options.path) {
-    url += options.path;
-  }
-  return url;
+  //if (options.path) {
+    //path += options.path;
+  //}
+  return url + path;
 };
