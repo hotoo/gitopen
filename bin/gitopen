@@ -3,8 +3,10 @@
 var commander = require('commander');
 var fs = require('fs');
 var path = require('path');
+var URL = require('url');
 var child_process = require('child_process');
-var gitRemote = require('../');
+var yaml = require('js-yaml');
+var GitRemote = require('../');
 
 commander
   .version(require('../package.json').version)
@@ -15,10 +17,11 @@ commander
   .parse(process.argv);
 
 var options = {
-  category: 'default',
+  category: 'home',
   cwd: commander.path || process.cwd(),
   hash: commander.branch || 'master',
   remote: commander.remote || 'origin',
+  protocol: 'https',
 };
 
 var RE_ISSUE_ID = /^#\d+$/;
@@ -133,7 +136,42 @@ default:
   }
 }
 
-var url = gitRemote(options);
+
+function getUserHome() {
+  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+
+var $HOME = exports.$HOME = getUserHome();
+
+var url = GitRemote.resolveGitUrl(GitRemote.getRemoteUrl(options.cwd, options.remote), options);
+var type = GitRemote.getRemoteType(url);
+if (!type) {
+  var gitopenrc = path.join($HOME, '.gitopenrc');
+  try {
+    if (fs.existsSync(gitopenrc)) {
+      var config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
+      Object.keys(config).some(function(hostname){
+        if (URL.parse(url).hostname === hostname) {
+          options.protocol = config[hostname].protocol || 'https';
+          type = config[hostname].type;
+          if (type === 'custom') {
+            options.scheme = config[hostname].scheme;
+          }
+          return true;
+        }
+      });
+    }
+  } catch (ex) {
+    console.error('Read .gitopenrc error: %s', ex.message);
+    process.exit(1);
+  }
+}
+if (!options.scheme) {
+  options.scheme = require('../scheme-' + type);
+}
+//url = url.replace(/^https?/, options.protocol)
+
+var url = GitRemote(options);
 
 if (commander.verbose) {
   console.log('options:', options);

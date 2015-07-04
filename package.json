@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/hotoo/gitopen",
   "dependencies": {
-    "commander": "^2.8.1"
+    "commander": "^2.8.1",
+    "js-yaml": "^3.3.1"
   }
 }

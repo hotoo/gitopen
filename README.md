@@ -6,8 +6,8 @@ Open git remote from browser.
 Support:
 
 * [X] [GitHub](https://github.com/)
-* [ ] [GitLab](https://gitlub.com/)
-* [ ] [BitBucket](https://bitbucket.org/)
+* [X] [GitLab](https://gitlub.com/)
+* [X] [BitBucket](https://bitbucket.org/)
 * [ ] [GitCafe](https://gitcafe.com/)
 * [ ] [OSC](https://git.oschina.net/)
 * [ ] Custom
@@ -51,22 +51,25 @@ $ gitopen -p ../../other-repo-dir   # https://github.com/hotoo/other-repo-dir
 ## Configuration
 
 Default support [github.com](https://github.com/),
-[bitbucket.org](https://bitbucket.org/) and [gitlab.com](https://gitlab.com/).
+[bitbucket.org](https://bitbucket.org/), [gitlab.com](https://gitlab.com/),
+[gitcafe.com](https://gitcafe.com/) and [git.oschina.net](https://git.oschina.net/).
 
-If you use [gitlab](https://gitlab.org/) or other custom web system
+If you use [gitlab.org](https://gitlab.org/) or other custom web system
 build you owner git server, you need config like:
 
 ~/.gitopenrc
 
-```yml
+```yaml
 gitlab.company.com:
   type: gitlab
-  protocal: http
+  protocol: http
 gitlab.example.com:
   type: custom
-  protocal: https
-  issues: /path/to/issues
-  wiki: /path/to/wikis
+  protocol: https
+  scheme:
+    issues: /path/to/issues
+    wiki: /path/to/wikis
+    ...
 ```
 
 You can git alias in ~/.gitconfig:

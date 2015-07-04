@@ -24,17 +24,17 @@ var RE_SSH_URL = /^ssh:\/\//i;
 var RE_HTTP_URL = /^https?:\/\//i;
 var RE_FILE_URL = /^file:\/\/\//i;
 var RE_GIT_EXT = /\.git$/i;
-function resolveGitUrl(uri) {
+function resolveGitUrl(uri, options) {
   switch(true){
   case RE_SCP_URL.test(uri):
-    return 'https://' + (uri.replace(RE_SCP_URL, '')
+    return options.protocol + '://' + (uri.replace(RE_SCP_URL, '')
               .replace(':', '/')
               .replace(RE_GIT_EXT, ''));
   case RE_GIT_URL.test(uri):
-    return uri.replace(RE_GIT_URL, 'https://')
+    return uri.replace(RE_GIT_URL, options.protocol + '://')
               .replace(RE_GIT_EXT, '');
   case RE_SSH_URL.test(uri):
-    return uri.replace(RE_SSH_URL, 'https://')
+    return uri.replace(RE_SSH_URL, options.protocol + '://')
               .replace(RE_GIT_EXT, '');
   case RE_HTTP_URL.test(uri):
     return uri.replace(RE_GIT_EXT, '');
@@ -68,9 +68,8 @@ function getRemoteType(url) {
 module.exports = function(options) {
   var cwd = options.cwd || process.cwd();
   var remote = getRemoteUrl(cwd, options.remote || 'origin');
-  var url = resolveGitUrl(remote);
-  var type = options.type || getRemoteType(url);
-  var scheme = require('./scheme-' + type);
+  var url = resolveGitUrl(remote, options);
+  var scheme = options.scheme || require('./scheme-github');
   var path = '';
 
   switch (options.category) {
@@ -147,3 +146,7 @@ module.exports = function(options) {
   //}
   return url + path;
 };
+
+module.exports.getRemoteUrl = getRemoteUrl;
+module.exports.resolveGitUrl = resolveGitUrl;
+module.exports.getRemoteType = getRemoteType;
