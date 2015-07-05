@@ -5,7 +5,6 @@ module.exports = {
   'issues/id': '/issues/{issue-id}',
   'issues/new': '/issues/new',
   'issues/new?title': '/issues/new?title={title}',
-  'issue': '/issues/{issue-id}',
   'wiki': '/wiki',
   'network': '/network',
   'tree': '/src/{hash}',
