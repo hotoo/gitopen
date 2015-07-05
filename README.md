@@ -1,6 +1,17 @@
 
 # gitopen
 
+[![NPM version][npm-badge]][npm-url]
+[![Build status][travis-badge]][travis-url]
+[![Coveralls status][Coveralls-badge]][coveralls-url]
+
+[npm-badge]: https://img.shields.io/npm/v/gitopen.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/gitopen
+[travis-badge]: https://travis-ci.org/hotoo/gitopen.svg
+[travis-url]: https://travis-ci.org/hotoo/gitopen
+[coveralls-badge]: https://coveralls.io/repos/hotoo/gitopen/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/r/hotoo/gitopen
+
 Open git remote from browser.
 
 Support:
