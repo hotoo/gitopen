@@ -28,5 +28,9 @@
   "dependencies": {
     "commander": "^2.8.1",
     "js-yaml": "^3.3.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^7.0.1"
   }
 }

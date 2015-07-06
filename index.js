@@ -1,5 +1,14 @@
+/* global module, process */
 
 var child_process = require('child_process');
+var util = require('util');
+
+var DEFAULT_OPTIONS = {
+  cwd: process.cwd(),
+  hash: 'master',
+  protocol: 'https',
+  remote: 'origin',
+};
 
 function getRemoteUrl(cwd, origin) {
   try {
@@ -64,10 +73,10 @@ function getRemoteType(url) {
   }
 }
 
-/* global module, process */
 module.exports = function(options) {
-  var cwd = options.cwd || process.cwd();
-  var remote = getRemoteUrl(cwd, options.remote || 'origin');
+  options = util._extend(DEFAULT_OPTIONS, options);
+  var cwd = options.cwd;
+  var remote = getRemoteUrl(cwd, options.remote);
   var url = resolveGitUrl(remote, options);
   var scheme = options.scheme || require('./scheme-github');
   var path = '';
@@ -132,14 +141,13 @@ module.exports = function(options) {
     case 'blob':
       path = scheme.blob.replace('{hash}', options.args.hash);
       break;
-    case 'home':
+    //case 'home':
+    default:
       path = '';
       if (options.hash !== 'master')  {
         path = scheme.tree.replace('{hash}', options.hash);
       }
       break;
-    default:
-      throw new Error('Unknow category %s', options.category);
   }
   //if (options.path) {
     //path += options.path;
