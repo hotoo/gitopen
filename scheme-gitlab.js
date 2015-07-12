@@ -16,6 +16,7 @@ module.exports = {
   'releases': '/releases',
   'releases/new': '/releases/new',
   'releases/new-with-tag': '/releases/new?tag={tag}',
+  'releases/edit/tag-id': '/releases/edit/{tag}',
   'pulls': '/pulls',
   'pulls/new': '/compare',
   'pulls/new-with-branch': '/compare/{branch-A}...{branch-B}',

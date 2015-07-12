@@ -16,6 +16,7 @@ module.exports = {
   'releases': '/releases',
   'releases/new': '/releases/new',
   'releases/new-with-tag': '/releases/new?tag={tag}',
+  'releases/edit/tag-id': '/releases/edit/{tag}',
   'pulls': '/pull-requests',
   'pulls/new': 'pull-request/new',
   'pulls/new-with-branch': '/pull-request/new/{branch-A}...{branch-B}', // FIXME

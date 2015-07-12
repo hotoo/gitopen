@@ -75,13 +75,18 @@ case 'release':
 case 'releases':
   options.category = 'releases';
   if (commander.args[1] === 'new') {
-    options.category = 'releases/new'
+    options.category = 'releases/new';
     if (commander.args[2]) {
       options.category = 'releases/new-with-tag';
       options.args = {
         tag: commander.args[2],
       };
     }
+  } else if (commander.args[1] === 'edit') {
+    options.category = 'releases/edit/tag-id';
+    options.args = {
+      tag: commander.args[2],
+    };
   }
   break;
 case 'network':
