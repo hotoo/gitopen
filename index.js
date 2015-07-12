@@ -125,6 +125,10 @@ module.exports = function(options) {
       path = scheme['releases/new-with-tag']
                   .replace('{tag}', options.args.tag);
       break;
+    case 'releases/edit/tag-id':
+      path = scheme['releases/edit/tag-id']
+                  .replace('{tag}', options.args.tag);
+      break;
     case 'network':
       path = scheme.network;
       break;
