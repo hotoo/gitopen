@@ -178,6 +178,10 @@ if (commander.verbose) {
   console.log(url);
 }
 
-child_process.execSync('open ' + url);
+if (process.platform === 'win32' || process.platform === 'win64') {
+  child_process.execSync('start ' + url);
+} else { // darwin, unix, linux.
+  child_process.execSync('open ' + url);
+}
 
 // vim:ft=javascript
