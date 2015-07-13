@@ -183,10 +183,13 @@ if (commander.verbose) {
   console.log(url);
 }
 
-if (process.platform === 'win32' || process.platform === 'win64') {
-  child_process.execSync('start ' + url);
-} else { // darwin, unix, linux.
-  child_process.execSync('open ' + url);
+var platform = process.platform;
+var shell = 'start';
+
+if (platform !== 'win32') {
+  shell = platform === 'linux' ? 'xdg-open' : 'open';
 }
+
+child_process.execSync(shell + ' ' + url);
 
 // vim:ft=javascript
