@@ -177,16 +177,27 @@ if (!options.scheme) {
 //url = url.replace(/^https?/, options.protocol)
 
 var url = GitRemote(options);
+var shell;
 
 if (commander.verbose) {
-  console.log('options:', options);
-  console.log(url);
+  console.log('Options:', options);
+  console.log('URL:', url);
 }
 
-if (process.platform === 'win32' || process.platform === 'win64') {
-  child_process.execSync('start ' + url);
-} else { // darwin, unix, linux.
-  child_process.execSync('open ' + url);
+switch(process.platform){
+case 'win32':
+case 'win64':
+  shell = 'start';
+  break;
+case 'unix':
+case 'linux':
+  shell = 'xdg-open';
+  break;
+// case 'darwin':
+default:
+  shell = 'open';
 }
+
+child_process.execSync(shell + ' ' + url);
 
 // vim:ft=javascript
