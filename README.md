@@ -105,3 +105,7 @@ Then you can use command like:
 ```
 $ git open
 ```
+
+## License
+
+[MIT](http://hotoo.mit-license.org/)
