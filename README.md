@@ -16,6 +16,12 @@ Open git remote from browser.
 
 Support:
 
+* [X] Mac OS X
+* [X] Windows
+* [X] Linux
+
+and
+
 * [X] [GitHub](https://github.com/)
 * [X] [GitLab](https://gitlub.com/)
 * [X] [BitBucket](https://bitbucket.org/)
