@@ -72,7 +72,8 @@ Default support [github.com](https://github.com/),
 [gitcafe.com](https://gitcafe.com/) and [git.oschina.net](https://git.oschina.net/).
 
 If you use [GitHub Enterprise](https://enterprise.github.com/),
-[GitLab Community Edition (CE) or GitLab Enterprise Edition (EE)](https://gitlab.org/),
+[GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
+[GitCafe Enterprise](https://enterprise.gitcafe.com/)
 or other custom web system build you owner git server, you need config like:
 
 ~/.gitopenrc
