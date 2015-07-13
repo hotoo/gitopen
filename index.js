@@ -10,18 +10,6 @@ var DEFAULT_OPTIONS = {
   remote: 'origin',
 };
 
-function getRemoteUrl(cwd, origin) {
-  try {
-    return child_process.execSync(
-              'git config remote.' + (origin || 'origin') + '.url',
-              {cwd: cwd}
-        ).toString().trim();
-  } catch (ex) {
-    console.error('Can not get remote url from dir: %s', cwd);
-    return '';
-  }
-}
-
 function getCurrentBranch(cwd) {
   return child_process.execSync('git symbolic-ref --short HEAD', {cwd: cwd})
           .toString().trim();
@@ -76,6 +64,7 @@ function getRemoteType(url) {
 module.exports = function(options) {
   options = util._extend(DEFAULT_OPTIONS, options);
   var cwd = options.cwd;
+  //TODO
   var remote = getRemoteUrl(cwd, options.remote);
   var url = resolveGitUrl(remote, options);
   var scheme = options.scheme || require('./scheme-github');
@@ -159,6 +148,5 @@ module.exports = function(options) {
   return url + path;
 };
 
-module.exports.getRemoteUrl = getRemoteUrl;
 module.exports.resolveGitUrl = resolveGitUrl;
 module.exports.getRemoteType = getRemoteType;
