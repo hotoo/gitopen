@@ -71,18 +71,22 @@ Default support [github.com](https://github.com/),
 [bitbucket.org](https://bitbucket.org/), [gitlab.com](https://gitlab.com/),
 [gitcafe.com](https://gitcafe.com/) and [git.oschina.net](https://git.oschina.net/).
 
-If you use [gitlab.org](https://gitlab.org/) or other custom web system
-build you owner git server, you need config like:
+If you use [GitHub Enterprise](https://enterprise.github.com/),
+[GitLab Community Edition (CE) or GitLab Enterprise Edition (EE)](https://gitlab.org/),
+or other custom web system build you owner git server, you need config like:
 
 ~/.gitopenrc
 
 ```yaml
-gitlab.company.com:
+github.company.com:
+  type: github
+  protocol: https
+gitlab.company.net:
   type: gitlab
   protocol: http
-gitlab.example.com:
+git.example.com:
   type: custom
-  protocol: https
+  protocol: http
   scheme:
     issues: /path/to/issues
     wiki: /path/to/wikis
