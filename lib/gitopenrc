@@ -1,0 +1,22 @@
+module.exports = {
+  "github.com": {
+    protocol: "https",
+    type: "github"
+  },
+  "gitlab.com": {
+    protocol: "https",
+    type: "gitlab"
+  },
+  "bitbucket.org": {
+    protocol: "https",
+    type: "bitbucket"
+  },
+  "gitcafe.com": {
+    protocol: "https",
+    type: "gitcafe"
+  },
+  "git.oschina.net": {
+    protocol: "https",
+    type: "oschina"
+  }
+};
