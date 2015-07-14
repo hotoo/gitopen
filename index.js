@@ -1,72 +1,65 @@
-/* global module, process */
+/* global module */
 
-var child_process = require('child_process');
-var util = require('util');
+function merge() {
+  var args = Array.prototype.slice.call(arguments);
+  var merged = {};
+  args.forEach(function(object) {
+    Object.keys(object).forEach(function(key) {
+      merged[key] = object[key];
+    });
+  });
+  return merged;
+}
 
 var DEFAULT_OPTIONS = {
-  cwd: process.cwd(),
   hash: 'master',
   protocol: 'https',
   remote: 'origin',
+  scheme: {
+    base: '{protocol}://{hostname}/{username}/{reponame}'
+  }
 };
 
-function getCurrentBranch(cwd) {
-  return child_process.execSync('git symbolic-ref --short HEAD', {cwd: cwd})
-          .toString().trim();
-}
+//                 git@hostname:username/reponame.git
+var RE_SCP_URL = /^git@([^:]+):([^\/]+)\/(.+?)(?:\.git)?$/i;
+//                 git://hostname/username/reponame.git
+var RE_GIT_URL = /^git:\/\/([^\/]+)\/([^\/]+)\/(.+?)(?:\.git)?$/i;
+//                 ssh://hostname/username/reponame.git
+var RE_SSH_URL = /^ssh:\/\/([^\/]+)\/([^\/]+)\/(.+?)(?:\.git)?$/i;
+//                  https://hostname/username/reponame.git
+var RE_HTTP_URL = /^https?:\/\/([^\/]+)\/([^\/]+)\/(.+?)(?:\.git)?$/i;
 
-var RE_SCP_URL = /^git@/i;
-var RE_GIT_URL = /^git:\/\//i;
-var RE_SSH_URL = /^ssh:\/\//i;
-var RE_HTTP_URL = /^https?:\/\//i;
-var RE_FILE_URL = /^file:\/\/\//i;
-var RE_GIT_EXT = /\.git$/i;
-function resolveGitUrl(uri, options) {
-  switch(true){
-  case RE_SCP_URL.test(uri):
-    return options.protocol + '://' + (uri.replace(RE_SCP_URL, '')
-              .replace(':', '/')
-              .replace(RE_GIT_EXT, ''));
-  case RE_GIT_URL.test(uri):
-    return uri.replace(RE_GIT_URL, options.protocol + '://')
-              .replace(RE_GIT_EXT, '');
-  case RE_SSH_URL.test(uri):
-    return uri.replace(RE_SSH_URL, options.protocol + '://')
-              .replace(RE_GIT_EXT, '');
-  case RE_HTTP_URL.test(uri):
-    return uri.replace(RE_GIT_EXT, '');
-  case RE_FILE_URL.test(uri):
-    return uri;
-  default:
-    throw new Error('Not Support protocol: ' + uri);
+function parse(uri) {
+  var match = RE_SCP_URL.exec(uri) ||
+              RE_GIT_URL.exec(uri) ||
+              RE_SSH_URL.exec(uri) ||
+              RE_HTTP_URL.exec(uri);
+
+  if (!match) {
+    throw new Error('Can not resolve url: ' + uri);
   }
+
+  return {
+    hostname: match[1],
+    username: match[2],
+    reponame: match[3],
+  };
 }
 
-var RE_GITHUB = /^https:\/\/github\.com\//;
-var RE_GITLIB = /^https:\/\/gitlab\.org\//;
-var RE_BITBUCKET = /^https:\/\/bitbucket\.org\//;
-var RE_GITCAFE = /^https:\/\/gitcafe\.com\//;
-var RE_OSCHINA = /^https:\/\/git\.oschina\.net\//;
-function getRemoteType(url) {
-  if (RE_GITHUB.test(url)) {
-    return 'github';
-  } else if (RE_GITLIB.test(url)) {
-    return 'gitlab';
-  } else if (RE_BITBUCKET.test(url)) {
-    return 'bitbucket';
-  } else if (RE_GITCAFE.test(url)) {
-    return 'gitcafe';
-  } else if (RE_OSCHINA.test(url)) {
-    return 'oschina';
-  }
+function resolve(uri, options) {
+  options = merge(DEFAULT_OPTIONS, options);
+  var protocol = options.protocol || 'https';
+  var parsedUri = parse(uri);
+
+  return options.scheme.base.replace('{protocol}', protocol)
+                     .replace('{hostname}', parsedUri.hostname)
+                     .replace('{username}', parsedUri.username)
+                     .replace('{reponame}', parsedUri.reponame);
 }
 
-module.exports = function(options) {
-  options = util._extend(DEFAULT_OPTIONS, options);
-  var cwd = options.cwd;
-  //TODO
-  var remote = getRemoteUrl(cwd, options.remote);
-  var url = resolveGitUrl(remote, options);
+module.exports = function(uri, options) {
+  options = merge(DEFAULT_OPTIONS, options);
+  var url = resolve(uri, options);
   var scheme = options.scheme || require('./scheme-github');
   var path = '';
 
@@ -93,7 +86,7 @@ module.exports = function(options) {
     case 'pulls/new-with-branch':
       path = scheme['pulls/new-with-branch']
                   .replace('{branch-A}', options.args['branch-A'])
-                  .replace('{branch-B}', options.args['branch-B'] || getCurrentBranch(cwd));
+                  .replace('{branch-B}', options.args['branch-B']);
       break;
     case 'wiki':
       path = scheme.wiki;
@@ -134,7 +127,9 @@ module.exports = function(options) {
     case 'blob':
       path = scheme.blob.replace('{hash}', options.args.hash);
       break;
-    //case 'home':
+    case 'home':
+      path = scheme.home;
+      break;
     default:
       path = '';
       if (options.hash !== 'master')  {
@@ -148,5 +143,5 @@ module.exports = function(options) {
   return url + path;
 };
 
-module.exports.resolveGitUrl = resolveGitUrl;
-module.exports.getRemoteType = getRemoteType;
+module.exports.parse = parse;
+module.exports.resolve = resolve;

@@ -1,5 +1,6 @@
 /* global module */
 module.exports = {
+  'base': '{protocol}://{hostname}/{username}/{reponame}',
   'home': '',
   'issues': '/issues',
   'issues/id': '/issues/{issue-id}',
