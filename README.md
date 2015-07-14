@@ -16,18 +16,18 @@ Open git remote from browser.
 
 Support:
 
-* [X] Mac OS X
-* [X] Windows
-* [X] Linux
+* Mac OS X
+* Windows
+* Linux/Unix
 
 and
 
-* [X] [GitHub](https://github.com/)
-* [X] [GitLab](https://gitlub.com/)
-* [X] [BitBucket](https://bitbucket.org/)
-* [X] [GitCafe](https://gitcafe.com/)
-* [X] [OSC](https://git.oschina.net/)
-* [X] Custom
+* [GitHub](https://github.com/)
+* [GitLab](https://gitlub.com/)
+* [BitBucket](https://bitbucket.org/)
+* [GitCafe](https://gitcafe.com/)
+* [OSC](https://git.oschina.net/)
+* Custom
 
 ## Install
 
@@ -91,6 +91,7 @@ git.example.com:
   scheme:
     issues: /path/to/issues
     wiki: /path/to/wikis
+    more: [reference to github scheme](./scheme-github.js)
     ...
 ```
 
