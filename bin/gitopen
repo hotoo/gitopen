@@ -6,7 +6,9 @@ var path = require('path');
 var URL = require('url');
 var child_process = require('child_process');
 var yaml = require('js-yaml');
-var GitRemote = require('../');
+var gitresolve = require('../index');
+var gitremote = require('../lib/gitremote');
+var DEFAULT_CONFIG = require('../gitopenrc');
 
 commander
   .version(require('../package.json').version)
@@ -55,7 +57,7 @@ case 'pulls':
     options.category = 'pulls/new-with-branch';
     options.args = {
       'branch-A': match[1] || 'master',
-      'branch-B': match[2],
+      'branch-B': match[2] || gitremote.getCurrentBranch(options.cwd),
     };
   }
   break;
@@ -148,35 +150,48 @@ function getUserHome() {
 
 var $HOME = exports.$HOME = getUserHome();
 
-var url = GitRemote.resolveGitUrl(GitRemote.getRemoteUrl(options.cwd, options.remote), options);
-var type = GitRemote.getRemoteType(url);
-if (!type) {
+function getConfig(uri) {
+  var HOSTNAME = gitresolve.parse(uri).hostname;
+  var config = DEFAULT_CONFIG[HOSTNAME];
+
+  if (config) {
+    return {
+      type: config.type,
+      scheme: require('../scheme-' + DEFAULT_CONFIG[HOSTNAME].type),
+      protocol: config.protocol,
+    };
+  }
+
   var gitopenrc = path.join($HOME, '.gitopenrc');
-  try {
-    if (fs.existsSync(gitopenrc)) {
-      var config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
+  var result = {};
+  if (fs.existsSync(gitopenrc)) {
+    try {
+      config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
       Object.keys(config).some(function(hostname){
-        if (URL.parse(url).hostname === hostname) {
-          options.protocol = config[hostname].protocol || 'https';
-          type = config[hostname].type;
+        if (HOSTNAME === hostname) {
+          result.protocol = config[hostname].protocol || 'https';
+          var type = config[hostname].type;
           if (type === 'custom') {
-            options.scheme = config[hostname].scheme;
+            result.scheme = config[hostname].scheme || {};
           }
           return true;
         }
       });
+      return result;
+    } catch (ex) {
+      console.error('Read .gitopenrc error: %s', ex.message);
+      process.exit(1);
     }
-  } catch (ex) {
-    console.error('Read .gitopenrc error: %s', ex.message);
-    process.exit(1);
   }
 }
-if (!options.scheme) {
-  options.scheme = require('../scheme-' + type);
-}
+
+var uri = gitremote.getRemoteUrl(options);
+var config = getConfig(uri);
+options.scheme = config.scheme;
+options.protocol = config.protocol;
 //url = url.replace(/^https?/, options.protocol)
 
-var url = GitRemote(options);
+var url = gitresolve(uri, options);
 var shell;
 
 if (commander.verbose) {
