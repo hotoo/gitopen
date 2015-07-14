@@ -6,9 +6,9 @@ var path = require('path');
 var URL = require('url');
 var child_process = require('child_process');
 var yaml = require('js-yaml');
-var gitresolve = require('../index');
+var gitresolve = require('../lib/index');
 var gitremote = require('../lib/gitremote');
-var DEFAULT_CONFIG = require('../gitopenrc');
+var DEFAULT_CONFIG = require('../lib/gitopenrc');
 
 commander
   .version(require('../package.json').version)
@@ -157,7 +157,7 @@ function getConfig(uri) {
   if (config) {
     return {
       type: config.type,
-      scheme: require('../scheme-' + DEFAULT_CONFIG[HOSTNAME].type),
+      scheme: require('../lib/scheme/' + DEFAULT_CONFIG[HOSTNAME].type),
       protocol: config.protocol,
     };
   }
