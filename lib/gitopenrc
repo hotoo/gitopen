@@ -19,4 +19,8 @@ module.exports = {
     protocol: "https",
     type: "oschina"
   }
+  "coding.com": {
+    protocol: "https",
+    type: "coding"
+  }
 };
