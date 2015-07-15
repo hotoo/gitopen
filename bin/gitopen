@@ -181,6 +181,8 @@ function getConfig(uri) {
           var type = config[hostname].type;
           if (type === 'custom') {
             result.scheme = config[hostname].scheme || {};
+          } else {
+            result.scheme = require('../lib/scheme/' + config[hostname].type);
           }
           return true;
         }
