@@ -3,12 +3,11 @@
 var commander = require('commander');
 var fs = require('fs');
 var path = require('path');
-var URL = require('url');
-var child_process = require('child_process');
 var yaml = require('js-yaml');
 var gitresolve = require('../lib/index');
 var gitremote = require('../lib/gitremote');
 var DEFAULT_CONFIG = require('../lib/gitopenrc');
+var xopen = require('../lib/xopen');
 
 commander
   .version(require('../package.json').version)
@@ -125,7 +124,7 @@ default:
     // TODO: profile
     var username = m[1];
     var reponame = m[2];
-    open('https://github.com/' + username + (reponame? '/'+reponame : ''));
+    xopen('https://github.com/' + username + (reponame? '/'+reponame : ''), commander);
     process.exit(0);
     return;
   } else {
@@ -194,36 +193,11 @@ function getConfig(uri) {
   }
 }
 
-function open(url) {
-  var shell;
-
-  if (commander.verbose) {
-    console.log('Options:', options);
-    console.log('URL:', url);
-  }
-
-  switch(process.platform){
-  case 'win32':
-  case 'win64':
-    shell = 'start';
-    break;
-  case 'unix':
-  case 'linux':
-    shell = 'xdg-open';
-    break;
-  // case 'darwin':
-  default:
-    shell = 'open';
-  }
-
-  child_process.execSync(shell + ' ' + url);
-}
-
 var uri = gitremote.getRemoteUrl(options);
 var config = getConfig(uri);
 options.scheme = config.scheme;
 options.protocol = config.protocol;
 var url = gitresolve(uri, options);
-open(url);
+xopen(url, commander);
 
 // vim:ft=javascript
