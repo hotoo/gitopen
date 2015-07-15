@@ -27,6 +27,7 @@ var options = {
 };
 
 var RE_ISSUE_ID = /^#\d+$/;
+var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
 var RE_BRANCH_COMPARE = /^(\w+)?:(\w+)?$/;
 
 var category = commander.args[0];
@@ -109,6 +110,7 @@ case undefined: // 未指定任何特定信息。
   options.category = 'home';
   break;
 default:
+  var m;
   if (category.indexOf(':') === 0) {
     options.category = 'tree';
     options.args = {
@@ -119,6 +121,13 @@ default:
     options.args = {
       issue_id: category.substring(1),
     };
+  } else if (m = RE_PROFILE.exec(category)) {
+    // TODO: profile
+    var username = m[1];
+    var reponame = m[2];
+    open('https://github.com/' + username + (reponame? '/'+reponame : ''));
+    process.exit(0);
+    return;
   } else {
     // FILE/DIR PATH
     if (fs.existsSync(category)) {
@@ -185,34 +194,36 @@ function getConfig(uri) {
   }
 }
 
+function open(url) {
+  var shell;
+
+  if (commander.verbose) {
+    console.log('Options:', options);
+    console.log('URL:', url);
+  }
+
+  switch(process.platform){
+  case 'win32':
+  case 'win64':
+    shell = 'start';
+    break;
+  case 'unix':
+  case 'linux':
+    shell = 'xdg-open';
+    break;
+  // case 'darwin':
+  default:
+    shell = 'open';
+  }
+
+  child_process.execSync(shell + ' ' + url);
+}
+
 var uri = gitremote.getRemoteUrl(options);
 var config = getConfig(uri);
 options.scheme = config.scheme;
 options.protocol = config.protocol;
-//url = url.replace(/^https?/, options.protocol)
-
 var url = gitresolve(uri, options);
-var shell;
-
-if (commander.verbose) {
-  console.log('Options:', options);
-  console.log('URL:', url);
-}
-
-switch(process.platform){
-case 'win32':
-case 'win64':
-  shell = 'start';
-  break;
-case 'unix':
-case 'linux':
-  shell = 'xdg-open';
-  break;
-// case 'darwin':
-default:
-  shell = 'open';
-}
-
-child_process.execSync(shell + ' ' + url);
+open(url);
 
 // vim:ft=javascript
