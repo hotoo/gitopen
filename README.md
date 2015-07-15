@@ -91,7 +91,7 @@ git.example.com:
   scheme:
     issues: /path/to/issues
     wiki: /path/to/wikis
-    more: [reference to github scheme](./scheme-github.js)
+    more: [reference to github scheme](./lib/scheme/github.js)
     ...
 ```
 
