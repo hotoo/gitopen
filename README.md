@@ -27,6 +27,7 @@ and
 * [BitBucket](https://bitbucket.org/)
 * [GitCafe](https://gitcafe.com/)
 * [OSC](https://git.oschina.net/)
+* [Coding](https://coding.net/)
 * Custom
 
 ## Install
@@ -58,6 +59,10 @@ $ gitopen pr                    # New a pull-request
 $ gitopen commits
 $ gitopen network
 
+# global command.
+$ gitopen @lizzie
+$ gitopen @hotoo/gitopen
+
 
 # Not Support Yet.
 $ gitopen -p .                      # https://github.com/hotoo/gitopen/master/subdir
@@ -69,7 +74,8 @@ $ gitopen -p ../../other-repo-dir   # https://github.com/hotoo/other-repo-dir
 
 Default support [github.com](https://github.com/),
 [bitbucket.org](https://bitbucket.org/), [gitlab.com](https://gitlab.com/),
-[gitcafe.com](https://gitcafe.com/) and [git.oschina.net](https://git.oschina.net/).
+[gitcafe.com](https://gitcafe.com/), [git.oschina.net](https://git.oschina.net/)
+and [coding.net](https://coding.net/).
 
 If you use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
