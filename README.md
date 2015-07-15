@@ -20,6 +20,12 @@ Support:
 * Windows
 * Linux/Unix
 
+,
+
+* [X] git
+* [X] svn
+* [ ] hg
+
 and
 
 * [GitHub](https://github.com/)
