@@ -8,6 +8,7 @@ describe('gitresolve.parse()', function () {
     ['git://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['ssh://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['https://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
+    ['https://hotoo@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
   ];
   cases.forEach(function(test){
     it('gitresolve.parse(' + test[0] + ')', function () {
@@ -22,6 +23,7 @@ describe('gitresolve.resolve()', function () {
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
   cases.forEach(function(test){
     it('gitresolve.resolve(' + test[0] + ',{base})', function () {
@@ -45,6 +47,7 @@ describe('gitresolve()', function () {
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
   cases.forEach(function(test){
     it('gitresolve(' + test[0] + ')', function () {
