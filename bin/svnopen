@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var commander = require('commander');
+var child_process = require('child_process');
+var xopen = require('../lib/xopen');
+
+commander
+  .version(require('../package.json').version)
+  .option('-v, --verbose', 'Print verbose information.')
+  .parse(process.argv);
+
+function svnremote(cwd) {
+  var m = child_process.execSync(
+      'svn info',
+      {cwd: cwd}
+    ).toString().match(/^URL: (.+)/m);
+  return m ? m[1] : '';
+}
+
+var url = svnremote(process.cwd());
+if (url) {
+  xopen(url, commander);
+} else {
+  console.error('Can not resolve svn remote url.');
+}
+
+// vim:ft=javascript
