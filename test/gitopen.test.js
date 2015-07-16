@@ -7,6 +7,7 @@ describe('gitresolve.parse()', function () {
     ['git@github.com:hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['git://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['ssh://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
     ['https://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
   ];
@@ -22,6 +23,7 @@ describe('gitresolve.resolve()', function () {
     ['git@github.com:hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
@@ -46,6 +48,7 @@ describe('gitresolve()', function () {
     ['git@github.com:hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
