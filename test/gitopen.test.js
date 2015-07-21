@@ -1,12 +1,17 @@
 
 var gitresolve = require('../');
 var gitremote = require('../lib/gitremote');
+var child_process = require('child_process');
+var should = require('should');
+
+var cwb = gitremote.getCurrentBranch();
 
 describe('gitresolve.parse()', function () {
   var cases = [
     ['git@github.com:hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['git://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['ssh://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
     ['https://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
   ];
@@ -22,6 +27,7 @@ describe('gitresolve.resolve()', function () {
     ['git@github.com:hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
@@ -46,6 +52,7 @@ describe('gitresolve()', function () {
     ['git@github.com:hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['git://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['ssh://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
     ['https://github.com/hotoo/gitopen.git', 'github.com/hotoo/gitopen'],
     ['https://hotoo@bitbucket.org/hotoo/gitopen.git', 'bitbucket.org/hotoo/gitopen'],
   ];
@@ -125,19 +132,33 @@ describe('gitresolve()', function () {
       }).should.be.eql('https://' + test[1] + '/compare');
     });
 
-    it('gitresolve(' + test[0] + ', {pulls/new-with-branch})', function () {
+    it('gitresolve(' + test[0] + ', {pulls/new})', function () {
       gitresolve(test[0], {
-        category: 'pulls/new-with-branch',
+        category: 'pulls/new',
         args: {
           'branch-A': '123',
           'branch-B': '456'
         },
         scheme: {
           base: '{protocol}://{hostname}/{username}/{reponame}',
-          'pulls/new-with-branch': '/compare/{branch-A}...{branch-B}',
+          'pulls/new-with-base-branch': '/compare/{branch-A}...{branch-B}',
         }
       }).should.be.eql('https://' + test[1] + '/compare/123...456');
     });
+
+    it('gitresolve(' + test[0] + ', {pulls/new/branchName})', function () {
+      gitresolve(test[0], {
+        category: 'pulls/new',
+        args: {
+          'branch-B': '456'
+        },
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'pulls/new-with-compare-branch': '/compare/{branch-B}?expand=1',
+        }
+      }).should.be.eql('https://' + test[1] + '/compare/456?expand=1');
+    });
+
   });
 });
 
@@ -163,23 +184,106 @@ describe('gitremote()', function () {
 
 });
 
-describe('gitopen()', function () {
-  return;
-
-  it('gitopen()', function () {
-    gitremote().should.be.eql('https://github.com/hotoo/gitopen');
+describe('$ cd non-git-dir && gitopen', function () {
+  it('$ gitopen @hotoo', function (done) {
+    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose @hotoo', function(err, stdout) {
+      should(err).not.be.ok();
+      stdout.should.be.containEql('URL: https://github.com/hotoo\n');
+      done();
+    });
   });
 
-  it('gitopen(cwd)', function () {
-    gitremote({cwd:'.'}).should.be.eql('https://github.com/hotoo/gitopen');
+  it('$ gitopen @hotoo/gitopen', function (done) {
+    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose @hotoo/gitopen', function(err, stdout) {
+      should(err).not.be.ok();
+      stdout.should.be.containEql('URL: https://github.com/hotoo/gitopen\n');
+      done();
+    });
   });
 
-  it('gitopen(remote)', function () {
-    gitremote({remote:'origin'}).should.be.eql('https://github.com/hotoo/gitopen');
+  it('$ gitopen #1    SHOULD ERROR', function (done) {
+    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose "#1"', function(err) {
+      should(err).be.ok();
+      done();
+    });
+  });
+});
+
+describe('$ gitopen', function () {
+
+  var git_command_case = [
+    ['', '/hotoo/gitopen'],
+    ['"#1"', '/hotoo/gitopen/issues/1'],
+    [':master', '/hotoo/gitopen/tree/master'],
+    ['-b master', '/hotoo/gitopen/tree/master'],
+    ['--branch master', '/hotoo/gitopen/tree/master'],
+    ['wiki', '/hotoo/gitopen/wiki'],
+    ['wikis', '/hotoo/gitopen/wiki'],
+    ['issues', '/hotoo/gitopen/issues'],
+    ['issue', '/hotoo/gitopen/issues'],
+    ['pr', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
+    ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
+    ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
+    ['pull compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
+    ['pr base-branch:compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch'],
+    ['pr base/branch:compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
+    ['pr base-branch...compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch'],
+    ['pr base/branch...compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
+    ['pulls', '/hotoo/gitopen/pulls'],
+    ['pulls new', '/hotoo/gitopen/compare'],
+    ['ci', '/hotoo/gitopen/commits'],
+    ['commit', '/hotoo/gitopen/commits'],
+    ['commits', '/hotoo/gitopen/commits'],
+    ['@hotoo', '/hotoo'],
+    ['@hotoo/gitopen', '/hotoo/gitopen'],
+  ];
+
+  git_command_case.forEach(function(testcase) {
+    var cmd = testcase[0] ? ' ' + testcase[0] : '';
+    it('$ gitopen' + cmd, function (done) {
+      child_process.exec('bin/gitopen --verbose' + cmd, function(err, stdout) {
+        should(err).not.be.ok();
+        stdout.should.be.containEql('URL: https://github.com' + testcase[1] + '\n');
+        done();
+      });
+    });
+  });
+});
+
+
+describe('$ hgopen', function () {
+  var hg_command_case = [
+    ['', '/hotoo/gitopen'],
+    ['#1', '/hotoo/gitopen/issues/1'],
+  ];
+
+  describe('$ ssh://', function () {
+    hg_command_case.forEach(function(testcase) {
+      var cmd = testcase[0] ? ' "' + testcase[0] + '"' : '';
+      it('$ hgopen' + cmd, function (done) {
+        child_process.exec('cd test/hgssh && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
+          should(err).not.be.ok();
+          stdout.should.be.containEql('URL: https://bitbucket.org' + testcase[1] + '\n');
+          done();
+        });
+      });
+    });
   });
 
-  it('gitopen(hash)', function () {
-    gitremote({hash:'012345'}).should.be.eql('https://github.com/hotoo/gitopen/tree/012345');
+  describe('$ https://', function () {
+    hg_command_case.forEach(function(testcase) {
+      var cmd = testcase[0] ? ' "' + testcase[0] + '"' : '';
+      it('$ hgopen' + cmd, function (done) {
+        child_process.exec('cd test/hghttp && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
+          should(err).not.be.ok();
+          stdout.should.be.containEql('URL: https://bitbucket.org' + testcase[1] + '\n');
+          done();
+        });
+      });
+    });
   });
+});
 
+describe('$ svnopen', function () {
+  // TODO:
 });
