@@ -25,6 +25,7 @@ module.exports = function(argv) {
   var RE_ISSUE_ID = /^#\d+$/;
   var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
+  var RE_MILESTONE = /^milestones?[@\/:#\-](.+)$/i;
   // branch-a:branch-b
   // branch-a...branch-b
   var RE_BRANCH_COMPARE = /^(.*?)(?::|\.{3})(.*)$/;
@@ -36,7 +37,7 @@ module.exports = function(argv) {
   case 'issue':
     options.category = 'issues/new';
     options.args = {
-      title: commander.args[1]
+      title: commander.args.slice(1).join(' ')
     };
     break;
   case 'issues':
@@ -86,6 +87,11 @@ module.exports = function(argv) {
     options.category = 'tags';
     break;
   case 'milestone':
+    options.category = 'milestones/new';
+    options.args = {
+      title: commander.args.slice(1).join(' ')
+    }
+    break;
   case 'milestones':
     options.category = 'milestones';
     break;
@@ -154,6 +160,11 @@ module.exports = function(argv) {
       options.args = {
         username: username,
         reponame: reponame,
+      };
+    } else if (m = RE_MILESTONE.exec(category)) {
+      options.category = 'milestones/id';
+      options.args = {
+        milestone_id: m[1],
       };
     } else {
       // FILE/DIR PATH
