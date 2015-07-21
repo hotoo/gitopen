@@ -24,7 +24,7 @@ Support:
 
 * [X] git
 * [X] svn
-* [ ] hg
+* [X] hg
 
 and
 
@@ -57,6 +57,8 @@ $ gitopen :master
 $ gitopen -b master
 $ gitopen issues                # https://github.com/hotoo/gitopen/issues
 $ gitopen #1                    # https://github.com/hotoo/gitopen/issues/1
+$ gitopen pr
+$ gitopen mr
 $ gitopen pulls                 # https://github.com/hotoo/gitopen/pulls
 $ gitopen wiki
 $ gitopen release
