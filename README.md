@@ -162,12 +162,9 @@ Open git repository pull request or merge request by id.
 alias:
 
 * `$ gitopen pr1`
-* `$ gitopen pr:1`
-* `$ gitopen pr/1`
-* `$ gitopen pr@1`
-* `$ gitopen pr#1`
 * `$ gitopen mr#1`
-* ...
+
+support `@`, `/`, `#`, `:`, `-` or without sparator.
 
 ### $ gitopen commits
 
@@ -198,9 +195,19 @@ alias:
 
 Open git repository milestones list page.
 
+### $ gitopen milestones@id
+
+Open git repository milestones by given id.
+
 alias:
 
-* `$ gitopen milestone`
+* `$ gitopen milestone@id`
+
+support `@`, `/`, `#`, `:`, `-` sparator.
+
+### $ gitopen milestone
+
+Open new milestone for git.
 
 ### $ gitopen releases
 

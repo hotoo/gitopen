@@ -112,7 +112,38 @@ describe('gitresolve()', function () {
       }).should.be.eql('https://' + test[1] + '/issues/new?title=TEST');
     });
 
-    it('gitresolve(' + test[0] + ', {issues/new?title})', function () {
+    it('gitresolve(' + test[0] + ', {milestones})', function () {
+      gitresolve(test[0], {
+        category: 'milestones',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          milestones: '/milestones',
+        }
+      }).should.be.eql('https://' + test[1] + '/milestones');
+    });
+
+    it('gitresolve(' + test[0] + ', {milestones/id})', function () {
+      gitresolve(test[0], {
+        category: 'milestones/id',
+        args: {'milestone_id': '1'},
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'milestones/id': '/milestones/{milestone-id}',
+        }
+      }).should.be.eql('https://' + test[1] + '/milestones/1');
+    });
+
+    it('gitresolve(' + test[0] + ', {milestones/new})', function () {
+      gitresolve(test[0], {
+        category: 'milestones/new',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'milestones/new': '/milestones/new',
+        }
+      }).should.be.eql('https://' + test[1] + '/milestones/new');
+    });
+
+    it('gitresolve(' + test[0] + ', {pulls})', function () {
       gitresolve(test[0], {
         category: 'pulls',
         scheme: {
@@ -234,6 +265,14 @@ describe('$ gitopen', function () {
     ['issue', '/hotoo/gitopen/issues/new'],
     ['issue TITLE', '/hotoo/gitopen/issues/new?title=TITLE'],
     ['issue 标题', '/hotoo/gitopen/issues/new?title=%E6%A0%87%E9%A2%98'],
+    ['issue TITLE 标题', '/hotoo/gitopen/issues/new?title=TITLE%20%E6%A0%87%E9%A2%98'],
+    ['milestones', '/hotoo/gitopen/milestones'],
+    ['milestone', '/hotoo/gitopen/milestones/new'],
+    ['milestone@2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
+    ['milestone/2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
+    ['milestone-2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
+    ['milestone#2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
+    ['milestone#里程碑', '/hotoo/gitopen/issues?q=milestone%3A%E9%87%8C%E7%A8%8B%E7%A2%91'],
     ['pr', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
     ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
     ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
