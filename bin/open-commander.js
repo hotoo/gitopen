@@ -23,8 +23,9 @@ module.exports = function(argv) {
   };
 
   var RE_ISSUE_ID = /^#\d+$/;
-  var RE_PR_ID = /^!\d+$/;
+  var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
+  var RE_MILESTONE = /^milestones?[@\/:#\-](.+)$/i;
   // branch-a:branch-b
   // branch-a...branch-b
   var RE_BRANCH_COMPARE = /^(.*?)(?::|\.{3})(.*)$/;
@@ -34,17 +35,13 @@ module.exports = function(argv) {
 
   switch(category){
   case 'issue':
+    options.category = 'issues/new';
+    options.args = {
+      title: commander.args.slice(1).join(' ')
+    };
+    break;
   case 'issues':
     options.category = 'issues';
-    if (commander.args[1] === 'new') {
-      options.category = 'issues/new';
-      if (commander.args[2]) {
-        options.category = 'issues/new-with-title';
-        options.args = {
-          title: commander.args[2]
-        };
-      }
-    }
     break;
   case 'pr':
   case 'mr':
@@ -90,6 +87,11 @@ module.exports = function(argv) {
     options.category = 'tags';
     break;
   case 'milestone':
+    options.category = 'milestones/new';
+    options.args = {
+      title: commander.args.slice(1).join(' ')
+    }
+    break;
   case 'milestones':
     options.category = 'milestones';
     break;
@@ -146,10 +148,10 @@ module.exports = function(argv) {
       options.args = {
         issue_id: category.substring(1),
       };
-    } else if (RE_PR_ID.test(category)) {
+    } else if (m = RE_PR_ID.exec(category)) {
       options.category = 'pulls/id';
       options.args = {
-        pull_id: category.substring(1),
+        pull_id: m[1],
       };
     } else if (m = RE_PROFILE.exec(category)) {
       var username = m[1];
@@ -158,6 +160,11 @@ module.exports = function(argv) {
       options.args = {
         username: username,
         reponame: reponame,
+      };
+    } else if (m = RE_MILESTONE.exec(category)) {
+      options.category = 'milestones/id';
+      options.args = {
+        milestone_id: m[1],
       };
     } else {
       // FILE/DIR PATH
