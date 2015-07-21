@@ -1,15 +1,10 @@
-/* global module */
-
-var commander = require('commander');
+/* global module, process */
 var fs = require('fs');
 var path = require('path');
-var yaml = require('js-yaml');
-var gitresolve = require('../lib/index');
+var commander = require('commander');
 var gitremote = require('../lib/gitremote');
-var DEFAULT_CONFIG = require('../lib/gitopenrc');
-var xopen = require('../lib/xopen');
 
-module.exports = function(uri, argv){
+module.exports = function(argv) {
   commander
     .version(require('../package.json').version)
     .option('-p, --path <path>', 'CWD path')
@@ -24,11 +19,14 @@ module.exports = function(uri, argv){
     hash: commander.branch || 'master',
     remote: commander.remote || 'origin',
     protocol: 'https',
+    verbose: commander.verbose,
   };
 
   var RE_ISSUE_ID = /^#\d+$/;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
-  var RE_BRANCH_COMPARE = /^(\w+)?:(\w+)?$/;
+  // branch-a:branch-b
+  // branch-a...branch-b
+  var RE_BRANCH_COMPARE = /^(.*?)(?::|\.{3})(.*)$/;
 
   var category = commander.args[0];
   var match;
@@ -50,16 +48,37 @@ module.exports = function(uri, argv){
   case 'pr':
   case 'mr':
   case 'pull':
+    options.category = 'pulls/new';
+    // current working branch name.
+    var cwb = gitremote.getCurrentBranch(options.cwd);
+    if (commander.args.length === 1) { // gitopen pr
+      options.args = {
+        'branch-B': cwb,
+      };
+    } else if (commander.args.length === 2) { // gitopen pr branchName
+      match = RE_BRANCH_COMPARE.exec(commander.args[1]);
+      console.log("DDD", commander.args[1], match);
+      if (match) { // gitopen pr a...b
+        options.args = {
+          'branch-A': match[1],
+          'branch-B': match[2] || cwb,
+        };
+      } else { // gitopen pr branchName
+        options.args = {
+          'branch-B': commander.args[1],
+        };
+      }
+    } else if (commander.args.length >= 3) {
+      options.args = {
+        'branch-A': commander.args[1],
+        'branch-B': commander.args[2] || cwb,
+      };
+    }
+    break;
   case 'pulls':
     options.category = 'pulls';
     if (commander.args[1] === 'new') {
       options.category = 'pulls/new';
-    } else if (match = RE_BRANCH_COMPARE.exec(commander.args[1])) {
-      options.category = 'pulls/new-with-branch';
-      options.args = {
-        'branch-A': match[1] || 'master',
-        'branch-B': match[2] || gitremote.getCurrentBranch(options.cwd),
-      };
     }
     break;
   case 'wiki':
@@ -108,6 +127,12 @@ module.exports = function(uri, argv){
     break;
   case undefined: // 未指定任何特定信息。
     options.category = 'home';
+    if (commander.branch) {
+      options.category = 'tree';
+      options.args = {
+        hash: commander.branch,
+      };
+    }
     break;
   default:
     var m;
@@ -125,9 +150,12 @@ module.exports = function(uri, argv){
       // TODO: profile
       var username = m[1];
       var reponame = m[2];
-      xopen('https://github.com/' + username + (reponame? '/'+reponame : ''), commander);
-      process.exit(0);
-      return 0;
+      options.category = 'profile';
+      options.args = {
+        username: username,
+        reponame: reponame,
+      };
+      //xopen('https://github.com/' + username + (reponame? '/'+reponame : ''), commander);
     } else {
       // FILE/DIR PATH
       if (fs.existsSync(category)) {
@@ -153,55 +181,5 @@ module.exports = function(uri, argv){
     }
   }
 
-  var config = getConfig(uri);
-  options.scheme = config.scheme;
-  options.protocol = config.protocol;
-
   return options;
-}
-
-
-function getUserHome() {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-var $HOME = exports.$HOME = getUserHome();
-
-function getConfig(uri) {
-  var HOSTNAME = gitresolve.parse(uri).hostname;
-  var config = DEFAULT_CONFIG[HOSTNAME];
-
-  if (config) {
-    return {
-      type: config.type,
-      scheme: require('../lib/scheme/' + DEFAULT_CONFIG[HOSTNAME].type),
-      protocol: config.protocol,
-    };
-  }
-
-  var gitopenrc = path.join($HOME, '.gitopenrc');
-  var result = {};
-  if (fs.existsSync(gitopenrc)) {
-    try {
-      config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
-      Object.keys(config).some(function(hostname){
-        if (HOSTNAME === hostname) {
-          result.protocol = config[hostname].protocol || 'https';
-          result.type = config[hostname].type;
-          var type = config[hostname].type;
-          if (type === 'custom') {
-            result.scheme = config[hostname].scheme || {};
-          } else {
-            result.scheme = require('../lib/scheme/' + config[hostname].type);
-          }
-          return true;
-        }
-      });
-      return result;
-    } catch (ex) {
-      console.error('Read .gitopenrc error: %s', ex.message);
-      process.exit(1);
-      return 1;
-    }
-  }
-}
+};

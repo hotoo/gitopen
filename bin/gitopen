@@ -1,13 +1,44 @@
 #!/usr/bin/env node
 
 var xopen = require('../lib/xopen');
-var getConfig = require('./xopen');
+var getConfig = require('./openrc');
 var gitremote = require('../lib/gitremote');
 var gitresolve = require('../lib/');
+var commander = require('./open-commander');
 
+// 1. commander
+// 2. if help then print help.
+// 3. if version then print version.
+var command = commander(process.argv);
+// 4. if @profile then open @profile
+if (command.category === 'profile') {
+  var username = command.args.username;
+  var reponame = command.args.reponame;
+  var url = 'https://github.com/' + username + (reponame? '/'+reponame : '');
+  if (command.verbose) {
+    console.log("URL:", url);
+    process.exit(0);
+    return 0;
+  }
+  xopen(url);
+  process.exit(0);
+  return 0;
+}
+
+// 5. git/hg/svn remote url.
 var uri = gitremote.getRemoteUrl({cwd: process.cwd()});
-var options = getConfig(uri, process.argv);
-var url = gitresolve(uri, options);
-xopen(url, options);
+// 6. get openrc
+var config = getConfig(uri);
+command.scheme = config.scheme;
+command.protocol = config.protocol;
+// 6. resolve paths.
+var url = gitresolve(uri, command);
+// 7. open
+if (command.verbose) {
+  console.log("Option:", command)
+  console.log("URL:", url);
+} else {
+  xopen(url);
+}
 
 // vim:ft=javascript
