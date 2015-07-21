@@ -23,6 +23,7 @@ module.exports = function(argv) {
   };
 
   var RE_ISSUE_ID = /^#\d+$/;
+  var RE_PR_ID = /^!\d+$/;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
   // branch-a:branch-b
   // branch-a...branch-b
@@ -145,8 +146,12 @@ module.exports = function(argv) {
       options.args = {
         issue_id: category.substring(1),
       };
+    } else if (RE_PR_ID.test(category)) {
+      options.category = 'pulls/id';
+      options.args = {
+        pull_id: category.substring(1),
+      };
     } else if (m = RE_PROFILE.exec(category)) {
-      // TODO: profile
       var username = m[1];
       var reponame = m[2];
       options.category = 'profile';
@@ -154,7 +159,6 @@ module.exports = function(argv) {
         username: username,
         reponame: reponame,
       };
-      //xopen('https://github.com/' + username + (reponame? '/'+reponame : ''), commander);
     } else {
       // FILE/DIR PATH
       if (fs.existsSync(category)) {

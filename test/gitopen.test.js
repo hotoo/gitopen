@@ -122,6 +122,17 @@ describe('gitresolve()', function () {
       }).should.be.eql('https://' + test[1] + '/pulls');
     });
 
+    it('gitresolve(' + test[0] + ', {pulls/id})', function () {
+      gitresolve(test[0], {
+        category: 'pulls/id',
+        args: {'pull_id': '1'},
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'pulls/id': '/pulls/{pull-id}',
+        }
+      }).should.be.eql('https://' + test[1] + '/pulls/1');
+    });
+
     it('gitresolve(' + test[0] + ', {pulls/new})', function () {
       gitresolve(test[0], {
         category: 'pulls/new',
@@ -231,6 +242,7 @@ describe('$ gitopen', function () {
     ['pr base/branch...compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
     ['pulls', '/hotoo/gitopen/pulls'],
     ['pulls new', '/hotoo/gitopen/compare'],
+    ['!1', '/hotoo/gitopen/pulls/1'],
     ['ci', '/hotoo/gitopen/commits'],
     ['commit', '/hotoo/gitopen/commits'],
     ['commits', '/hotoo/gitopen/commits'],
