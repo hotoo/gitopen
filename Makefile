@@ -8,12 +8,22 @@ MOCHA_OPTS =
 
 install:
 	@npm install
-	@
-	@hg clone https://hotoo@bitbucket.org/hotoo/hgtest test/hghttp/
 
 test:
-	@if [ ! -d $(HG_SSH_DIR) ]; then hg clone ssh://hg@bitbucket.org/hotoo/hgtest $(HG_SSH_DIR); fi
-	@if [ ! -d $(HG_HTTP_DIR) ]; then hg clone ssh://hg@bitbucket.org/hotoo/hgtest $(HG_HTTP_DIR); fi
+	@if [ ! -d $(HG_SSH_DIR) ]; then \
+		mkdir -p $(HG_SSH_DIR);  \
+		cd $(HG_SSH_DIR);  \
+		hg init;  \
+		echo [paths] >> .hg/hgrc;  \
+		echo default = ssh://hg@bitbucket.org/hotoo/gitopen >> .hg/hgrc;  \
+	fi
+	@if [ ! -d $(HG_HTTP_DIR) ]; then \
+		mkdir -p $(HG_HTTP_DIR);  \
+		cd $(HG_HTTP_DIR);  \
+		hg init;  \
+		echo [paths] >> .hg/hgrc;  \
+		echo default = https://hotoo@bitbucket.org/hotoo/gitopen >> .hg/hgrc;  \
+	fi
 	@./node_modules/.bin/mocha \
 		--harmony \
 		--reporter $(REPORTER) \

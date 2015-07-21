@@ -253,8 +253,8 @@ describe('$ gitopen', function () {
 
 describe('$ hgopen', function () {
   var hg_command_case = [
-    ['', '/hotoo/hgtest'],
-    ['#1', '/hotoo/hgtest/issues/1'],
+    ['', '/hotoo/gitopen'],
+    ['#1', '/hotoo/gitopen/issues/1'],
   ];
 
   describe('$ ssh://', function () {
