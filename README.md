@@ -52,18 +52,18 @@ $ git branch
 * master
 $ cd subdir
 
-$ gitopen                           # https://github.com/hotoo/gitopen
-$ gitopen :master
-$ gitopen -b master
+$ gitopen                       # Open git repository homepage, like: https://github.com/hotoo/gitopen
+$ gitopen :master               # Open git repository on given branch name.
+$ gitopen -b master             # Same the `:master`
 $ gitopen issues                # https://github.com/hotoo/gitopen/issues
 $ gitopen #1                    # https://github.com/hotoo/gitopen/issues/1
 $ gitopen pr                    # New a pull-request
 $ gitopen !1                    # Open merge/pull request by id.
 $ gitopen pulls                 # https://github.com/hotoo/gitopen/pulls
-$ gitopen wiki
-$ gitopen release
-$ gitopen tags
-$ gitopen commits
+$ gitopen wiki                  # Open wiki pages.
+$ gitopen release               # Open releases page.
+$ gitopen tags                  # Open tags page.
+$ gitopen commits               # Open commits pages.
 $ gitopen network
 
 # global command.
