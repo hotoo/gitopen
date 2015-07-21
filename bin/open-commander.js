@@ -57,7 +57,6 @@ module.exports = function(argv) {
       };
     } else if (commander.args.length === 2) { // gitopen pr branchName
       match = RE_BRANCH_COMPARE.exec(commander.args[1]);
-      console.log("DDD", commander.args[1], match);
       if (match) { // gitopen pr a...b
         options.args = {
           'branch-A': match[1],
