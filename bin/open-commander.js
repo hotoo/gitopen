@@ -23,7 +23,7 @@ module.exports = function(argv) {
   };
 
   var RE_ISSUE_ID = /^#\d+$/;
-  var RE_PR_ID = /^!\d+$/;
+  var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
   // branch-a:branch-b
   // branch-a...branch-b
@@ -146,10 +146,10 @@ module.exports = function(argv) {
       options.args = {
         issue_id: category.substring(1),
       };
-    } else if (RE_PR_ID.test(category)) {
+    } else if (m = RE_PR_ID.exec(category)) {
       options.category = 'pulls/id';
       options.args = {
-        pull_id: category.substring(1),
+        pull_id: m[1],
       };
     } else if (m = RE_PROFILE.exec(category)) {
       var username = m[1];
