@@ -124,15 +124,9 @@ Open git repository homepage.
 
 Open git repository issues list page.
 
-alias:
+### $ gitopen issue [title]
 
-* `$ gitopen issue`
-
-### $ gitopen issue new
-
-alias:
-
-* `$ gitopen issues new`
+Open new issue with title (optional).
 
 ### $ gitopen #1
 
