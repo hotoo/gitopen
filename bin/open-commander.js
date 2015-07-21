@@ -34,17 +34,13 @@ module.exports = function(argv) {
 
   switch(category){
   case 'issue':
+    options.category = 'issues/new';
+    options.args = {
+      title: commander.args[1]
+    };
+    break;
   case 'issues':
     options.category = 'issues';
-    if (commander.args[1] === 'new') {
-      options.category = 'issues/new';
-      if (commander.args[2]) {
-        options.category = 'issues/new-with-title';
-        options.args = {
-          title: commander.args[2]
-        };
-      }
-    }
     break;
   case 'pr':
   case 'mr':

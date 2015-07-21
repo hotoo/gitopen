@@ -103,7 +103,7 @@ describe('gitresolve()', function () {
 
     it('gitresolve(' + test[0] + ', {issues/new?title})', function () {
       gitresolve(test[0], {
-        category: 'issues/new-with-title',
+        category: 'issues/new',
         args: {title: 'TEST'},
         scheme: {
           base: '{protocol}://{hostname}/{username}/{reponame}',
@@ -231,7 +231,9 @@ describe('$ gitopen', function () {
     ['wiki', '/hotoo/gitopen/wiki'],
     ['wikis', '/hotoo/gitopen/wiki'],
     ['issues', '/hotoo/gitopen/issues'],
-    ['issue', '/hotoo/gitopen/issues'],
+    ['issue', '/hotoo/gitopen/issues/new'],
+    ['issue TITLE', '/hotoo/gitopen/issues/new?title=TITLE'],
+    ['issue 标题', '/hotoo/gitopen/issues/new?title=%E6%A0%87%E9%A2%98'],
     ['pr', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
     ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
     ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
