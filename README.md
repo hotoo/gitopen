@@ -114,7 +114,7 @@ Then you can use command like:
 $ git open
 ```
 
-## Commands
+## gitopen Commands
 
 ### $ gitopen
 
@@ -231,11 +231,26 @@ Open network page.
 
 ### $ gitopen @profile
 
-Open profile page on GitHub.
+[GLOBAL COMMAND] Open profile page on GitHub.
 
 ### $ gitopen @profile/repository-name
 
-Open given repository homepage on GitHub.
+[GLOBAL COMMAND] Open given repository homepage on GitHub.
+
+## hgopen Commands
+
+Support all of gitopen in repository local commands (not support global commands), like:
+
+* `$ hgopen` open homepage.
+* `$ hgopen issues` open issues list page.
+* `$ hgopen #id` op issues by id.
+* ...
+
+## svnopen Commands
+
+### $ svnopen
+
+Open svn repository on current working directory.
 
 ## License
 
