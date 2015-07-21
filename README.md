@@ -64,17 +64,10 @@ $ gitopen wiki                  # Open wiki pages.
 $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
 $ gitopen commits               # Open commits pages.
-$ gitopen network
 
 # global command.
-$ gitopen @lizzie
-$ gitopen @hotoo/gitopen
-
-
-# Not Support Yet.
-$ gitopen -p .                      # https://github.com/hotoo/gitopen/master/subdir
-$ gitopen -p ../README.md           # https://github.com/hotoo/gitopen/blob/master/README.md
-$ gitopen -p ../../other-repo-dir   # https://github.com/hotoo/other-repo-dir
+$ gitopen @lizzie               # https://github.com/lizzie
+$ gitopen @hotoo/gitopen        # https://github.com/hotoo/gitopen
 ```
 
 ## Configuration
@@ -120,6 +113,144 @@ Then you can use command like:
 ```
 $ git open
 ```
+
+## gitopen Commands
+
+### $ gitopen
+
+Open git repository homepage.
+
+### $ gitopen issues
+
+Open git repository issues list page.
+
+### $ gitopen issue [title]
+
+Open new issue with title (optional).
+
+### $ gitopen #1
+
+Open git repository issue by id.
+
+### $ gitopen pulls
+
+Open git repository pulls list page.
+
+### $ gitopen pull [branch-name]
+
+Open pull request or merge request from given branch or current working branch
+for git repository.
+
+alias:
+
+* `$ gitopen pr`
+* `$ gitopen mr`
+
+for example:
+
+```
+$ gitopen pr        # current working branch to compare default branch.
+$ gitopen pr a      # given branch(a) to compare default branch.
+$ gitopen pr a b    # branch b to compare branch a.
+$ gitopen pr a...b  # branch b to compare branch a.
+```
+
+### $ gitopen !1
+
+Open git repository pull request or merge request by id.
+
+alias:
+
+* `$ gitopen pr1`
+* `$ gitopen mr#1`
+
+support `@`, `/`, `#`, `:`, `-` or without sparator.
+
+### $ gitopen commits
+
+Open git repository commits list page.
+
+alias:
+
+* `$ gitopen commit`
+* `$ gitopen ci`
+
+### $ gitopen wiki
+
+Open git repository wiki home page.
+
+alias:
+
+* `$ gitopen wikis`
+
+### $ gitopen tags
+
+Open git repository tags list page.
+
+alias:
+
+* `$ gitopen tag`
+
+### $ gitopen milestones
+
+Open git repository milestones list page.
+
+### $ gitopen milestones@id
+
+Open git repository milestones by given id.
+
+alias:
+
+* `$ gitopen milestone@id`
+
+support `@`, `/`, `#`, `:`, `-` sparator.
+
+### $ gitopen milestone
+
+Open new milestone for git.
+
+### $ gitopen releases
+
+Open git repository releases list page.
+
+alias:
+
+* `$ gitopen release`
+
+### $ gitopen release new [tag-name]
+
+Open new release by tag name.
+
+### $ gitopen release edit <tag-name>
+
+Edit release by tag name.
+
+### $ gitopen network
+
+Open network page.
+
+### $ gitopen @profile
+
+[GLOBAL COMMAND] Open profile page on GitHub.
+
+### $ gitopen @profile/repository-name
+
+[GLOBAL COMMAND] Open given repository homepage on GitHub.
+
+## hgopen Commands
+
+Support all of gitopen in repository local commands (not support global commands), like:
+
+* `$ hgopen` open homepage.
+* `$ hgopen issues` open issues list page.
+* `$ hgopen #id` op issues by id.
+* ...
+
+## svnopen Commands
+
+### $ svnopen
+
+Open svn repository on current working directory.
 
 ## License
 
