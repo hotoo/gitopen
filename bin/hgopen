@@ -2,7 +2,7 @@
 
 var xopen = require('../lib/xopen');
 var getConfig = require('./openrc');
-var gitremote = require('../lib/gitremote');
+var hgremote = require('../lib/hgremote');
 var gitresolve = require('../lib/');
 var commander = require('./open-commander');
 
@@ -26,7 +26,7 @@ if (command.category === 'profile') {
 }
 
 // 5. git/hg/svn remote url.
-var uri = gitremote.getRemoteUrl({cwd: process.cwd()});
+var uri = hgremote.getRemoteUrl({cwd:process.cwd()});
 // 6. get openrc
 var config = getConfig(uri);
 command.scheme = config.scheme;
