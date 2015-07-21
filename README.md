@@ -57,13 +57,12 @@ $ gitopen :master
 $ gitopen -b master
 $ gitopen issues                # https://github.com/hotoo/gitopen/issues
 $ gitopen #1                    # https://github.com/hotoo/gitopen/issues/1
-$ gitopen pr
-$ gitopen mr
+$ gitopen pr                    # New a pull-request
+$ gitopen !1                    # Open merge/pull request by id.
 $ gitopen pulls                 # https://github.com/hotoo/gitopen/pulls
 $ gitopen wiki
 $ gitopen release
 $ gitopen tags
-$ gitopen pr                    # New a pull-request
 $ gitopen commits
 $ gitopen network
 
