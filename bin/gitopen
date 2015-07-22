@@ -26,7 +26,18 @@ if (command.category === 'profile') {
 }
 
 // 5. git/hg/svn remote url.
-var uri = gitremote.getRemoteUrl({cwd: process.cwd()});
+var uri;
+try {
+  uri = gitremote.getRemoteUrl({cwd: process.cwd()});
+} catch(ex) {
+  if (command.category === 'snippets/new') {
+    uri = 'https://github.com/hotoo/gitopen';
+  } else {
+    console.error('Not in git repository directory');
+    process.exit(1);
+    return 1;
+  }
+}
 // 6. get openrc
 var config = getConfig(uri);
 command.scheme = config.scheme;
