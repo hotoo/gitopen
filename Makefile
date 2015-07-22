@@ -24,12 +24,14 @@ test:
 		echo [paths] >> .hg/hgrc;  \
 		echo default = https://hotoo@bitbucket.org/hotoo/gitopen >> .hg/hgrc;  \
 	fi
-	@./node_modules/.bin/mocha \
+	@./node_modules/.bin/istanbul cover \
+	./node_modules/.bin/_mocha \
+		-- \
 		--harmony \
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
-		$(MOCHA_OPTS) \
+		--inline-diffs \
 		$(TESTS)
 
 publish:
@@ -37,4 +39,4 @@ publish:
 	@git tag $(version)
 	@git push origin $(version)
 
-.PHONY: test publish
+.PHONY: test publish coverage install
