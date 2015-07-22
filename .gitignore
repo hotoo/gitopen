@@ -1,3 +1,5 @@
 node_modules/
 test/hghttp/
 test/hgssh/
+.DS_Store
+coverage/

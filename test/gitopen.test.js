@@ -202,6 +202,142 @@ describe('gitresolve()', function () {
       }).should.be.eql('https://' + test[1] + '/compare/456?expand=1');
     });
 
+    it('gitresolve(' + test[0] + ', {wiki})', function () {
+      gitresolve(test[0], {
+        category: 'wiki',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          wiki: '/wiki',
+        }
+      }).should.be.eql('https://' + test[1] + '/wiki');
+    });
+
+    it('gitresolve(' + test[0] + ', {tags})', function () {
+      gitresolve(test[0], {
+        category: 'tags',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          tags: '/tags',
+        }
+      }).should.be.eql('https://' + test[1] + '/tags');
+    });
+
+    it('gitresolve(' + test[0] + ', {releases})', function () {
+      gitresolve(test[0], {
+        category: 'releases',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          releases: '/releases',
+        }
+      }).should.be.eql('https://' + test[1] + '/releases');
+    });
+
+    it('gitresolve(' + test[0] + ', {releases/new})', function () {
+      gitresolve(test[0], {
+        category: 'releases/new',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'releases/new': '/releases/new',
+        }
+      }).should.be.eql('https://' + test[1] + '/releases/new');
+    });
+
+    it('gitresolve(' + test[0] + ', {releases/new-with-tag})', function () {
+      gitresolve(test[0], {
+        category: 'releases/new-with-tag',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'releases/new-with-tag': '/releases/new?tag={tag}',
+        },
+        args: {tag: '2.0.0'}
+      }).should.be.eql('https://' + test[1] + '/releases/new?tag=2.0.0');
+    });
+
+    it('gitresolve(' + test[0] + ', {releases/edit/tag-id})', function () {
+      gitresolve(test[0], {
+        category: 'releases/edit/tag-id',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'releases/edit/tag-id': '/releases/edit/{tag}',
+        },
+        args: {tag: '2.0.0'}
+      }).should.be.eql('https://' + test[1] + '/releases/edit/2.0.0');
+    });
+
+    it('gitresolve(' + test[0] + ', {network})', function () {
+      gitresolve(test[0], {
+        category: 'network',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'network': '/network',
+        },
+      }).should.be.eql('https://' + test[1] + '/network');
+    });
+
+    it('gitresolve(' + test[0] + ', {commits})', function () {
+      gitresolve(test[0], {
+        category: 'commits',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'commits': '/commits',
+        },
+      }).should.be.eql('https://' + test[1] + '/commits');
+    });
+
+    it('gitresolve(' + test[0] + ', {commits-with-branch})', function () {
+      gitresolve(test[0], {
+        category: 'commits-with-branch',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'commits-with-branch': '/commits?branch={branch-name}',
+        },
+        args: {branch: 'br'}
+      }).should.be.eql('https://' + test[1] + '/commits?branch=br');
+    });
+
+    it('gitresolve(' + test[0] + ', {home})', function () {
+      gitresolve(test[0], {
+        category: 'home',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'home': '',
+        },
+        args: {branch: 'br'}
+      }).should.be.eql('https://' + test[1]);
+    });
+
+    it('gitresolve(' + test[0] + ', {tree})', function () {
+      gitresolve(test[0], {
+        category: 'tree',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'tree': '/tree/{hash}/',
+        },
+        args: {hash: 'br'}
+      }).should.be.eql('https://' + test[1] + '/tree/br/');
+    });
+
+    it('gitresolve(' + test[0] + ', {blob})', function () {
+      gitresolve(test[0], {
+        category: 'blob',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'blob': '/blob/{hash}/README',
+        },
+        args: {hash: 'br'}
+      }).should.be.eql('https://' + test[1] + '/blob/br/README');
+    });
+
+    it('gitresolve(' + test[0] + ', {snippets/new})', function () {
+      gitresolve(test[0], {
+        category: 'snippets/new',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'snippets/new': '/snippets/new',
+        },
+      }).should.be.eql('https://' + test[1] + '/snippets/new');
+    });
+
   });
 });
 
