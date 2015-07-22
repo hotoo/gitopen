@@ -22,9 +22,9 @@ Support:
 
 ,
 
-* [X] git
-* [X] svn
-* [X] hg
+* git
+* svn
+* hg
 
 and
 
