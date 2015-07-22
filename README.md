@@ -267,3 +267,17 @@ Open svn repository on current working directory.
 ## License
 
 [MIT](http://hotoo.mit-license.org/)
+
+## Donate
+
+If this tool is useful for you, please Star this repository.
+
+And you have choice to donate me via Alipay.com:
+
+![hotoo.cn@gmail.com](http://hotoo.me/images/hotoo-alipay.png)
+
+or donate my wife [@lizzie](https://github.com/lizzie)
+
+![shenyan1985@gmail.com](http://hotoo.me/images/lizzie-alipay.png)
+
+> Use [Alipay mobile app](https://mobile.alipay.com) on your phone to scan the QR-code.
