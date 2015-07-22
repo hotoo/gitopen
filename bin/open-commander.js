@@ -26,6 +26,7 @@ module.exports = function(argv) {
   var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
   var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
   var RE_MILESTONE = /^milestones?[@\/:#\-](.+)$/i;
+  var RE_GIST = /^(?:gist|snippet|snip)(?:@(.+))?$/i;
   // branch-a:branch-b
   // branch-a...branch-b
   var RE_BRANCH_COMPARE = /^(.*?)(?::|\.{3})(.*)$/;
@@ -127,6 +128,14 @@ module.exports = function(argv) {
       };
     }
     break;
+  case 'gist':
+  case 'snip':
+  case 'snippet':
+    options.category = 'snippets/new';
+    options.args = {
+      type: 'github',
+    };
+    break;
   case undefined: // 未指定任何特定信息。
     options.category = 'home';
     if (commander.branch) {
@@ -165,6 +174,11 @@ module.exports = function(argv) {
       options.category = 'milestones/id';
       options.args = {
         milestone_id: m[1],
+      };
+    } else if (m = RE_GIST.exec(category)) {
+      options.category = 'snippets/new';
+      options.args = {
+        type: m[1],
       };
     } else {
       // FILE/DIR PATH
