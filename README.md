@@ -225,6 +225,17 @@ Open new release by tag name.
 
 Edit release by tag name.
 
+### $ gitopen snippet
+
+[LOCAL COMMAND] Open new snippet.
+
+[GLOBAL COMMAND] Open https://gist.github.com/
+
+alias:
+
+* `$ gitopen snip`
+* `$ gitopen gist`
+
 ### $ gitopen network
 
 Open network page.
