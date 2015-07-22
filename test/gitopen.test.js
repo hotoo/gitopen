@@ -5,6 +5,7 @@ var child_process = require('child_process');
 var should = require('should');
 
 var cwb = gitremote.getCurrentBranch();
+var RE_URL = /^https?:\/\//i;
 
 describe('gitresolve.parse()', function () {
   var cases = [
@@ -243,6 +244,14 @@ describe('$ cd non-git-dir && gitopen', function () {
     });
   });
 
+  it('$ gitopen snippet', function (done) {
+    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose snippet', function(err, stdout) {
+      should(err).not.be.ok();
+      stdout.should.be.containEql('URL: https://gist.github.com/\n');
+      done();
+    });
+  });
+
   it('$ gitopen #1    SHOULD ERROR', function (done) {
     child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose "#1"', function(err) {
       should(err).be.ok();
@@ -299,14 +308,17 @@ describe('$ gitopen', function () {
     ['commits', '/hotoo/gitopen/commits'],
     ['@hotoo', '/hotoo'],
     ['@hotoo/gitopen', '/hotoo/gitopen'],
+    ['snippet', 'https://gist.github.com/'],
+    ['snip', 'https://gist.github.com/'],
+    ['gist', 'https://gist.github.com/'],
   ];
 
   git_command_case.forEach(function(testcase) {
     var cmd = testcase[0] ? ' ' + testcase[0] : '';
     it('$ gitopen' + cmd, function (done) {
-      child_process.exec('bin/gitopen --verbose' + cmd, function(err, stdout) {
+      child_process.exec('./bin/gitopen --verbose' + cmd, function(err, stdout) {
         should(err).not.be.ok();
-        stdout.should.be.containEql('URL: https://github.com' + testcase[1] + '\n');
+        stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://github.com' + testcase[1]) + '\n');
         done();
       });
     });
@@ -318,6 +330,9 @@ describe('$ hgopen', function () {
   var hg_command_case = [
     ['', '/hotoo/gitopen'],
     ['#1', '/hotoo/gitopen/issues/1'],
+    ['snippet', 'https://bitbucket.org/snippets/new'],
+    ['snip', 'https://bitbucket.org/snippets/new'],
+    ['gist', 'https://bitbucket.org/snippets/new'],
   ];
 
   describe('$ ssh://', function () {
@@ -326,7 +341,7 @@ describe('$ hgopen', function () {
       it('$ hgopen' + cmd, function (done) {
         child_process.exec('cd test/hgssh && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
           should(err).not.be.ok();
-          stdout.should.be.containEql('URL: https://bitbucket.org' + testcase[1] + '\n');
+          stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://bitbucket.org' + testcase[1]) + '\n');
           done();
         });
       });
@@ -339,7 +354,7 @@ describe('$ hgopen', function () {
       it('$ hgopen' + cmd, function (done) {
         child_process.exec('cd test/hghttp && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
           should(err).not.be.ok();
-          stdout.should.be.containEql('URL: https://bitbucket.org' + testcase[1] + '\n');
+          stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://bitbucket.org' + testcase[1]) + '\n');
           done();
         });
       });

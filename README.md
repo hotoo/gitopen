@@ -29,7 +29,7 @@ Support:
 and
 
 * [GitHub](https://github.com/)
-* [GitLab](https://gitlub.com/)
+* [GitLab](https://gitlab.com/)
 * [BitBucket](https://bitbucket.org/)
 * [GitCafe](https://gitcafe.com/)
 * [OSC](https://git.oschina.net/)
@@ -224,6 +224,17 @@ Open new release by tag name.
 ### $ gitopen release edit <tag-name>
 
 Edit release by tag name.
+
+### $ gitopen snippet
+
+[LOCAL COMMAND] Open new snippet.
+
+[GLOBAL COMMAND] Open https://gist.github.com/
+
+alias:
+
+* `$ gitopen snip`
+* `$ gitopen gist`
 
 ### $ gitopen network
 
