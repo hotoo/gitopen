@@ -34,6 +34,9 @@ test:
 		--inline-diffs \
 		$(TESTS)
 
+coveralls:
+	@cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+
 publish:
 	@npm publish
 	@git tag $(version)
