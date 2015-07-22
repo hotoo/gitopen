@@ -29,7 +29,7 @@ Support:
 and
 
 * [GitHub](https://github.com/)
-* [GitLab](https://gitlub.com/)
+* [GitLab](https://gitlab.com/)
 * [BitBucket](https://bitbucket.org/)
 * [GitCafe](https://gitcafe.com/)
 * [OSC](https://git.oschina.net/)
