@@ -79,6 +79,7 @@ and [coding.net](https://coding.net/).
 
 If you use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
+[Atlassian Stash](https://www.atlassian.com/software/stash)
 [GitCafe Enterprise](https://enterprise.gitcafe.com/)
 or other custom web system build you owner git server, you need config like:
 
