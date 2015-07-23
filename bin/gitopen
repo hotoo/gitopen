@@ -6,11 +6,17 @@ var gitremote = require('../lib/gitremote');
 var gitresolve = require('../lib/');
 var commander = require('./open-commander');
 
-var cwb = gitremote.getCurrentBranch(process.cwd()) || 'master';
+var cwd = process.cwd();
+var cwb = gitremote.getCurrentBranch(cwd) || 'master';
+var gitroot = gitremote.getGitRootPath(cwd);
 // 1. commander
 // 2. if help then print help.
 // 3. if version then print version.
-var command = commander(process.argv, cwb);
+var command = commander(process.argv, {
+  cwd: cwd,
+  cwb: cwb,
+  root: gitroot,
+});
 // 4. if @profile then open @profile
 if (command.category === 'profile') {
   var username = command.args.username;
