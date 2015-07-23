@@ -466,6 +466,23 @@ describe('$ gitopen', function () {
       });
     });
   });
+
+  var git_command_case_in_subdir = [
+    ['../README.md :master', '/hotoo/gitopen/blob/master/README.md'],
+    ['../README.md -b master', '/hotoo/gitopen/blob/master/README.md'],
+    [':master ../lib', '/hotoo/gitopen/tree/master/lib'],
+    ['-b master ../lib', '/hotoo/gitopen/tree/master/lib'],
+  ];
+  git_command_case_in_subdir.forEach(function(testcase) {
+    var cmd = testcase[0] ? ' ' + testcase[0] : '';
+    it('$ cd bin && gitopen' + cmd, function (done) {
+      child_process.exec('cd bin && ./gitopen --verbose' + cmd, function(err, stdout) {
+        should(err).not.be.ok();
+        stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://github.com' + testcase[1]) + '\n');
+        done();
+      });
+    });
+  });
 });
 
 
