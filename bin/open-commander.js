@@ -12,17 +12,76 @@ function resolve(filepath, cwd, root) {
 // @param {argv} process.argv
 // @param {String} cwb, current working branch name.
 module.exports = function(argv, option) {
+
+  function parseFilePath(options, cpath) {
+    try {
+      var stat = fs.statSync(cpath); //throw error when cpath is not accessable.
+
+      var filepath = resolve(cpath, option.cwd, option.root);
+      if (stat.isFile()) {
+        options.category = 'blob';
+        options.args = {
+          cwd: path.dirname(filepath),
+          path: filepath,
+        };
+        return options;
+      } else if (stat.isDirectory()) {
+        options.category = 'tree';
+        options.args = {
+          cwd: path.resolve(filepath, options.cwd),
+          path: filepath,
+        };
+        return options;
+      } else {
+        return null;
+      }
+    } catch (ex) {
+      return null;
+    }
+  }
+
   commander
     .version(require('../package.json').version)
+    .usage('[command] [options]')
     .option('-p, --path <path>', 'CWD path')
-    .option('-b, --branch <branch-name>', 'Goto branch in browser')
+    .option('-b, --branch <branch-name>', 'Specify branch, default is current working branch, also support alias `:branch`')
     .option('-r, --remote <remote-name>', 'Goto remote in browser, default is `origin`.')
     .option('-v, --verbose', 'Print verbose information.')
+    .on('--help', function() {
+      console.log('  Local Commanders:');
+      console.log();
+      console.log('    issue [title]                Open new issues with optional title');
+      console.log('    issues                       Open issues list page');
+      console.log('    #1                           Open issues by id');
+      console.log('    pull                         Open new pull/merge request by given branch, default is current working branch. alias `pr`, `mr`.');
+      console.log('    pulls                        Open pull/merge request list page');
+      console.log('    !1                           Open pull/merge request by id, alias `pr1`, `mr@1`, `pull#1`, support sparator `@`, `#`, `-`, `:`');
+      console.log('    {filepath}                   Open filepath by given branch, default is current working branch.');
+      console.log('    {directory}                  Open directory by given branch, default is current working branch.');
+      console.log('    wiki                         Open wiki page');
+      console.log('    commits                      Open commits list page, alias `ci`');
+      console.log('    tags                         Open tags list page');
+      console.log('    milestones                   Open milestones list page');
+      console.log('    milestones#1                 Open milestones by id');
+      console.log('    milestone                    Open new milestone');
+      console.log('    releases                     Open releases list page, alias `release`.');
+      console.log('    releases new <tag>           Open new releases list page');
+      console.log('    releases edit <tag>          Edit release by tag');
+      console.log('    network                      Open repository network page.');
+      console.log('    snippet                      Open new snippet on current repository\'s code hosting. support GitHub, GitLab, BitBucket.');
+      console.log();
+      console.log('  Global Commanders (out of repository directory):');
+      console.log();
+      console.log('    @lizzie                      Open lizzie\'s profile page');
+      console.log('    @hotoo/gitopen               Open https://github.com/hotoo/gitopen repository homepage.');
+      console.log('    snippet                      Open new snippet on https://gist.github.com/');
+      console.log();
+    })
     .parse(argv);
 
   var options = {
     category: 'home',
-    cwd: commander.path || option.cwd || process.cwd(),
+    cwd: path.dirname(commander.path) || option.cwd || process.cwd(),
     hash: commander.branch || option.cwb || 'master',
     remote: commander.remote || 'origin',
     protocol: 'https',
@@ -196,28 +255,18 @@ module.exports = function(argv, option) {
       };
     } else {
       // FILE/DIR PATH
-      if (fs.existsSync(category)) {
-        var filepath = resolve(category, option.cwd, option.root); // path.normalize(category)
-        var stat = fs.statSync(category);
-        if (stat.isFile()) {
-          options.category = 'blob';
-          options.args = {
-            cwd: path.dirname(filepath),
-            path: filepath,
-          };
-        } else if (stat.isDirectory()) {
-          options.category = 'tree';
-          options.args = {
-            cwd: path.resolve(filepath, options.cwd),
-            path: filepath,
-          };
-        }
-      } else {
+      if (!parseFilePath(options, category)) {
         console.error('Unknow category or path: ' + category);
         process.exit(1);
         return 1;
       }
     }
+  }
+
+  if (commander.path && !parseFilePath(options, commander.path)) {
+    console.error('Unknow path: ' + commander.path);
+    process.exit(1);
+    return 1;
   }
 
   return options;

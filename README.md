@@ -274,6 +274,24 @@ Support all of gitopen in repository local commands (not support global commands
 
 Open svn repository on current working directory.
 
+## Options
+
+### -p, --path
+
+Specify file/directory path, default is current working directory.
+
+### -b, --branch
+
+Specify git/hg branch name, default is current working branch.
+
+### -r, --remote
+
+Specify git remote name, default is `origin`.
+
+### -v, --verbose
+
+Display detail information for debug.
+
 ## License
 
 [MIT](http://hotoo.mit-license.org/)
