@@ -2,11 +2,16 @@
 var fs = require('fs');
 var path = require('path');
 var commander = require('commander');
-var gitremote = require('../lib/gitremote');
+
+// resolve absolute path to relative path base repository root.
+function resolve(filepath, cwd, root) {
+  return path.normalize(path.join(cwd, filepath))
+            .replace(root, '');
+}
 
 // @param {argv} process.argv
 // @param {String} cwb, current working branch name.
-module.exports = function(argv, cwb) {
+module.exports = function(argv, option) {
   commander
     .version(require('../package.json').version)
     .option('-p, --path <path>', 'CWD path')
@@ -17,8 +22,8 @@ module.exports = function(argv, cwb) {
 
   var options = {
     category: 'home',
-    cwd: commander.path || process.cwd(),
-    hash: commander.branch || cwb || 'master',
+    cwd: commander.path || option.cwd || process.cwd(),
+    hash: commander.branch || option.cwb || 'master',
     remote: commander.remote || 'origin',
     protocol: 'https',
     verbose: commander.verbose,
@@ -63,14 +68,14 @@ module.exports = function(argv, cwb) {
     // current working branch name.
     if (commander.args.length === 1) { // gitopen pr
       options.args = {
-        'branch-B': cwb,
+        'branch-B': option.cwb,
       };
     } else if (commander.args.length === 2) { // gitopen pr branchName
       match = RE_BRANCH_COMPARE.exec(commander.args[1]);
       if (match) { // gitopen pr a...b
         options.args = {
           'branch-A': match[1],
-          'branch-B': match[2] || cwb,
+          'branch-B': match[2] || option.cwb,
         };
       } else { // gitopen pr branchName
         options.args = {
@@ -80,7 +85,7 @@ module.exports = function(argv, cwb) {
     } else if (commander.args.length >= 3) {
       options.args = {
         'branch-A': commander.args[1],
-        'branch-B': commander.args[2] || cwb,
+        'branch-B': commander.args[2] || option.cwb,
       };
     }
     break;
@@ -191,20 +196,20 @@ module.exports = function(argv, cwb) {
       };
     } else {
       // FILE/DIR PATH
-      var filepath = path.normalize(category);
-      if (fs.existsSync(filepath)) {
-        var stat = fs.statSync(filepath);
+      if (fs.existsSync(category)) {
+        var filepath = resolve(category, option.cwd, option.root); // path.normalize(category)
+        var stat = fs.statSync(category);
         if (stat.isFile()) {
           options.category = 'blob';
           options.args = {
             cwd: path.dirname(filepath),
-            path: '/' + filepath,
+            path: filepath,
           };
         } else if (stat.isDirectory()) {
           options.category = 'tree';
           options.args = {
             cwd: path.resolve(filepath, options.cwd),
-            path: '/' + filepath,
+            path: filepath,
           };
         }
       } else {
