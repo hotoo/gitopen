@@ -313,7 +313,8 @@ describe('gitresolve()', function () {
           base: '{protocol}://{hostname}/{username}/{reponame}',
           'tree': '/tree/{hash}/',
         },
-        args: {hash: 'br'}
+        hash: 'br',
+        args: {path: ''}
       }).should.be.eql('https://' + test[1] + '/tree/br/');
     });
 
@@ -322,9 +323,10 @@ describe('gitresolve()', function () {
         category: 'blob',
         scheme: {
           base: '{protocol}://{hostname}/{username}/{reponame}',
-          'blob': '/blob/{hash}/README',
+          'blob': '/blob/{hash}{path}',
         },
-        args: {hash: 'br'}
+        hash: 'br',
+        args: {path: '/README'}
       }).should.be.eql('https://' + test[1] + '/blob/br/README');
     });
 
@@ -402,6 +404,11 @@ describe('$ gitopen', function () {
     ['', '/hotoo/gitopen'],
     ['"#1"', '/hotoo/gitopen/issues/1'],
     [':master', '/hotoo/gitopen/tree/master'],
+    [':master README.md', '/hotoo/gitopen/blob/master/README.md'],
+    ['README.md :master', '/hotoo/gitopen/blob/master/README.md'],
+    [':master lib', '/hotoo/gitopen/tree/master/lib'],
+    [':master lib/', '/hotoo/gitopen/tree/master/lib/'],
+    ['lib :master', '/hotoo/gitopen/tree/master/lib'],
     ['-b master', '/hotoo/gitopen/tree/master'],
     ['--branch master', '/hotoo/gitopen/tree/master'],
     ['wiki', '/hotoo/gitopen/wiki'],
