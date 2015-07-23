@@ -280,6 +280,14 @@ Open svn repository on current working directory.
 
 Specify file/directory path, default is current working directory.
 
+If you want open a file or directory name is reserved words, like `issues` and
+`pr`, you can use `--path` option instead.
+
+```
+$ gitopen -p issues
+$ gitopen --path pr
+```
+
 ### -b, --branch
 
 Specify git/hg branch name, default is current working branch.
