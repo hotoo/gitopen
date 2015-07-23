@@ -4,7 +4,9 @@ var path = require('path');
 var commander = require('commander');
 var gitremote = require('../lib/gitremote');
 
-module.exports = function(argv) {
+// @param {argv} process.argv
+// @param {String} cwb, current working branch name.
+module.exports = function(argv, cwb) {
   commander
     .version(require('../package.json').version)
     .option('-p, --path <path>', 'CWD path')
@@ -16,11 +18,21 @@ module.exports = function(argv) {
   var options = {
     category: 'home',
     cwd: commander.path || process.cwd(),
-    hash: commander.branch || 'master',
+    hash: commander.branch || cwb || 'master',
     remote: commander.remote || 'origin',
     protocol: 'https',
     verbose: commander.verbose,
   };
+
+  // prepare processing branch alias like `:branch-name`
+  for (var i=commander.args.length-1; i>=0; i--) {
+    if (commander.args[i].indexOf(':') === 0) {
+      var br = commander.args[i].substring(1);
+      options.hash = br;
+      commander.branch = br;
+      commander.args.splice(i, 1);
+    }
+  }
 
   var RE_ISSUE_ID = /^#\d+$/;
   var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
@@ -49,7 +61,6 @@ module.exports = function(argv) {
   case 'pull':
     options.category = 'pulls/new';
     // current working branch name.
-    var cwb = gitremote.getCurrentBranch(options.cwd);
     if (commander.args.length === 1) { // gitopen pr
       options.args = {
         'branch-B': cwb,
@@ -123,9 +134,6 @@ module.exports = function(argv) {
     options.category = 'commits';
     if (commander.branch) {
       options.category = 'commits-with-branch';
-      options.args = {
-        hash: commander.branch,
-      };
     }
     break;
   case 'gist':
@@ -141,7 +149,7 @@ module.exports = function(argv) {
     if (commander.branch) {
       options.category = 'tree';
       options.args = {
-        hash: commander.branch,
+        path: '',
       };
     }
     break;
@@ -149,8 +157,9 @@ module.exports = function(argv) {
     var m;
     if (category.indexOf(':') === 0) {
       options.category = 'tree';
+      options.hash = category.substring(1);
       options.args = {
-        hash: category.substring(1),
+        path: '',
       };
     } else if (RE_ISSUE_ID.test(category)) {
       options.category = 'issues/id';
@@ -182,19 +191,20 @@ module.exports = function(argv) {
       };
     } else {
       // FILE/DIR PATH
-      if (fs.existsSync(category)) {
-        var stat = fs.statSync(category);
+      var filepath = path.normalize(category);
+      if (fs.existsSync(filepath)) {
+        var stat = fs.statSync(filepath);
         if (stat.isFile()) {
           options.category = 'blob';
           options.args = {
-            cwd: path.dirname(category),
-            file: path.normalize(category),
+            cwd: path.dirname(filepath),
+            path: '/' + filepath,
           };
         } else if (stat.isDirectory()) {
           options.category = 'tree';
           options.args = {
-            cwd: path.resolve(category, options.cwd),
-            subpath: category,
+            cwd: path.resolve(filepath, options.cwd),
+            path: '/' + filepath,
           };
         }
       } else {
