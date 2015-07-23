@@ -65,6 +65,11 @@ $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
 $ gitopen commits               # Open commits pages.
 
+$ gitopen README.md             # Open remote blob url. default use current working branch.
+$ gitopen README.md -b branch   # Open remote blob url by given branch.
+$ gitopen README.md :branch     # Open remote blob url by given branch.
+$ gitopen path/to/dir           # Open remote tree url. default use current working branch.
+
 # global command.
 $ gitopen @lizzie               # https://github.com/lizzie
 $ gitopen @hotoo/gitopen        # https://github.com/hotoo/gitopen
@@ -225,6 +230,24 @@ Open new release by tag name.
 ### $ gitopen release edit <tag-name>
 
 Edit release by tag name.
+
+### $ gitopen filename [--branch <branch>]
+
+Open given file on given branch, default use current working branch.
+
+alias:
+
+* `$ gitopen filename :branch`
+* `$ gitopen filename -b branch`
+
+### $ gitopen directory [--branch <branch>]
+
+Open given directory on given branch, default use current working branch.
+
+alias:
+
+* `$ gitopen directory :branch`
+* `$ gitopen directory -b branch`
 
 ### $ gitopen snippet
 
