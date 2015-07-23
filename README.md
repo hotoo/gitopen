@@ -107,19 +107,6 @@ git.example.com:
     ...
 ```
 
-You can git alias in ~/.gitconfig:
-
-```
-[alias]
-  open = !gitopen $@
-```
-
-Then you can use command like:
-
-```
-$ git open
-```
-
 ## gitopen Commands
 
 ### $ gitopen
