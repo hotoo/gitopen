@@ -308,12 +308,10 @@ Display detail information for debug.
 
 If this tool is useful for you, please Star this repository.
 
-And you have choice to donate me via Alipay.com:
+And you have choice to donate me via Alipay / WeChat:
 
-![hotoo.cn@gmail.com](http://hotoo.me/images/hotoo-alipay.png)
+![Alipay:hotoo.cn@gmail.com, WeChat:hotoome](http://hotoo.me/images/donate-hotoo.png)
 
 or donate my wife [@lizzie](https://github.com/lizzie)
 
-![shenyan1985@gmail.com](http://hotoo.me/images/lizzie-alipay.png)
-
-> Use [Alipay mobile app](https://mobile.alipay.com) on your phone to scan the QR-code.
+![Alipay:shenyan1985@gmail.com, WeChat:SunsetSunrising](http://hotoo.me/images/donate-lizzie.png)
