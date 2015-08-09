@@ -36,6 +36,9 @@ and
 * [Coding](https://coding.net/)
 * Custom
 
+If you use [GitBucket](https://github.com/takezoe/gitbucket),
+[tell me](https://github.com/hotoo/gitopen/issues/new).
+
 ## Install
 
 ```
