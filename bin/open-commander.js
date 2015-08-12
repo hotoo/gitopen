@@ -89,7 +89,7 @@ module.exports = function(argv, option) {
   };
 
   // prepare processing branch alias like `:branch-name`
-  for (var i=commander.args.length-1; i>=0; i--) {
+  for (var i = commander.args.length - 1; i >= 0; i--) {
     if (commander.args[i].indexOf(':') === 0) {
       var br = commander.args[i].substring(1);
       options.hash = br;
@@ -106,6 +106,7 @@ module.exports = function(argv, option) {
   // branch-a:branch-b
   // branch-a...branch-b
   var RE_BRANCH_COMPARE = /^(.*?)(?::|\.{3})(.*)$/;
+  var RE_HASH = /^[0-9a-fA-F]{6,40}$/;
 
   var category = commander.args[0];
   var match;
@@ -166,7 +167,7 @@ module.exports = function(argv, option) {
     options.category = 'milestones/new';
     options.args = {
       title: commander.args.slice(1).join(' ')
-    }
+    };
     break;
   case 'milestones':
     options.category = 'milestones';
@@ -194,6 +195,11 @@ module.exports = function(argv, option) {
     break;
   case 'ci':
   case 'commit':
+    //options.category = 'commit';
+    //if (commander.args[2] && commander.args[2] !== '.') {
+      //options.hash = commander.args[2];
+    //}
+    //break;
   case 'commits':
     options.category = 'commits';
     if (commander.branch) {
@@ -230,12 +236,12 @@ module.exports = function(argv, option) {
       options.args = {
         issue_id: category.substring(1),
       };
-    } else if (m = RE_PR_ID.exec(category)) {
+    } else if ((m = RE_PR_ID.exec(category))) {
       options.category = 'pulls/id';
       options.args = {
         pull_id: m[1],
       };
-    } else if (m = RE_PROFILE.exec(category)) {
+    } else if ((m = RE_PROFILE.exec(category))) {
       var username = m[1];
       var reponame = m[2];
       options.category = 'profile';
@@ -243,16 +249,19 @@ module.exports = function(argv, option) {
         username: username,
         reponame: reponame,
       };
-    } else if (m = RE_MILESTONE.exec(category)) {
+    } else if ((m = RE_MILESTONE.exec(category))) {
       options.category = 'milestones/id';
       options.args = {
         milestone_id: m[1],
       };
-    } else if (m = RE_GIST.exec(category)) {
+    } else if ((m = RE_GIST.exec(category))) {
       options.category = 'snippets/new';
       options.args = {
         type: m[1],
       };
+    } else if (RE_HASH.test(category)) {
+      options.category = 'commit';
+      options.hash = category;
     } else {
       // FILE/DIR PATH
       if (!parseFilePath(options, category)) {

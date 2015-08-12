@@ -9,12 +9,12 @@ var RE_URL = /^https?:\/\//i;
 
 describe('gitresolve.parse()', function () {
   var cases = [
-    ['git@github.com:hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
-    ['git://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
-    ['ssh://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
-    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
-    ['https://github.com/hotoo/gitopen.git', {hostname: 'github.com', username:'hotoo', reponame:'gitopen'}],
-    ['https://hotoo@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username:'hotoo', reponame:'gitopen'}],
+    ['git@github.com:hotoo/gitopen.git', {hostname: 'github.com', username: 'hotoo', reponame: 'gitopen'}],
+    ['git://github.com/hotoo/gitopen.git', {hostname: 'github.com', username: 'hotoo', reponame: 'gitopen'}],
+    ['ssh://github.com/hotoo/gitopen.git', {hostname: 'github.com', username: 'hotoo', reponame: 'gitopen'}],
+    ['ssh://hg@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username: 'hotoo', reponame: 'gitopen'}],
+    ['https://github.com/hotoo/gitopen.git', {hostname: 'github.com', username: 'hotoo', reponame: 'gitopen'}],
+    ['https://hotoo@bitbucket.org/hotoo/gitopen.git', {hostname: 'bitbucket.org', username: 'hotoo', reponame: 'gitopen'}],
   ];
   cases.forEach(function(test){
     it('gitresolve.parse(' + test[0] + ')', function () {
@@ -291,7 +291,7 @@ describe('gitresolve()', function () {
           base: '{protocol}://{hostname}/{username}/{reponame}',
           'commits-with-branch': '/commits?branch={branch-name}',
         },
-        args: {branch: 'br'}
+        branch: 'br'
       }).should.be.eql('https://' + test[1] + '/commits?branch=br');
     });
 
@@ -340,6 +340,17 @@ describe('gitresolve()', function () {
       }).should.be.eql('https://' + test[1] + '/snippets/new');
     });
 
+    it('gitresolve(' + test[0] + ', {commit:ed8d9e3})', function () {
+      gitresolve(test[0], {
+        category: 'commit',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'commit': '/commits/{hash}',
+        },
+        hash: 'ed8d9e3'
+      }).should.be.eql('https://' + test[1] + '/commits/ed8d9e3');
+    });
+
   });
 });
 
@@ -356,11 +367,11 @@ describe('gitremote()', function () {
   });
 
   it('gitremote.getRemoteUrl({cwd})', function () {
-    resolve(gitremote.getRemoteUrl({cwd:'.'})).should.be.eql('github.com/hotoo/gitopen');
+    resolve(gitremote.getRemoteUrl({cwd: '.'})).should.be.eql('github.com/hotoo/gitopen');
   });
 
   it('gitremote.getRemoteUrl({remote})', function () {
-    resolve(gitremote.getRemoteUrl({remote:'origin'})).should.be.eql('github.com/hotoo/gitopen');
+    resolve(gitremote.getRemoteUrl({remote: 'origin'})).should.be.eql('github.com/hotoo/gitopen');
   });
 
 });
@@ -458,6 +469,7 @@ describe('$ gitopen', function () {
     ['ci', '/hotoo/gitopen/commits'],
     ['commit', '/hotoo/gitopen/commits'],
     ['commits', '/hotoo/gitopen/commits'],
+    ['ed8d9e3', '/hotoo/gitopen/commit/ed8d9e3'],
     ['@hotoo', '/hotoo'],
     ['@hotoo/gitopen', '/hotoo/gitopen'],
     ['snippet', 'https://gist.github.com/'],
