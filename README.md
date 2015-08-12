@@ -67,6 +67,7 @@ $ gitopen wiki                  # Open wiki pages.
 $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
 $ gitopen commits               # Open commits pages.
+$ gitopen {hash}                # Open commit page by hash code.
 
 $ gitopen README.md             # Open remote blob url. default use current working branch.
 $ gitopen README.md -b branch   # Open remote blob url by given branch.
@@ -183,6 +184,10 @@ alias:
 
 * `$ gitopen commit`
 * `$ gitopen ci`
+
+### $ gitopen {hash}
+
+Open  commit page by hash code.
 
 ### $ gitopen wiki
 

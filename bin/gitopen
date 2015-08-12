@@ -21,9 +21,9 @@ var command = commander(process.argv, {
 if (command.category === 'profile') {
   var username = command.args.username;
   var reponame = command.args.reponame;
-  var url = 'https://github.com/' + username + (reponame? '/'+reponame : '');
+  var url = 'https://github.com/' + username + (reponame ? '/' + reponame : '');
   if (command.verbose) {
-    console.log("URL:", url);
+    console.log('URL:', url);
     process.exit(0);
     return 0;
   }
@@ -53,8 +53,8 @@ command.protocol = config.protocol;
 var url = gitresolve(uri, command);
 // 7. open
 if (command.verbose) {
-  console.log("Option:", command)
-  console.log("URL:", url);
+  console.log('Option:', command);
+  console.log('URL:', url);
 } else {
   xopen(url);
 }
