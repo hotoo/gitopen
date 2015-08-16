@@ -12,7 +12,7 @@
 [coveralls-badge]: https://coveralls.io/repos/hotoo/gitopen/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/r/hotoo/gitopen
 
-Open git remote from browser.
+Open git/hg/svn remote from browser.
 
 Support:
 
@@ -23,8 +23,8 @@ Support:
 ,
 
 * git
-* svn
 * hg
+* svn
 
 and
 
@@ -327,12 +327,14 @@ Display detail information for debug.
 
 ## Donate
 
-If this tool is useful for you, please Star this repository.
+If this tool is useful for you, please [Star this repository](https://github.com/hotoo/gitopen).
 
-And you have choice to donate me via Alipay / WeChat:
+And maybe you want to donate me via Alipay / WeChat:
 
 ![Alipay:hotoo.cn@gmail.com, WeChat:hotoome](http://hotoo.me/images/donate-hotoo.png)
 
-or donate my wife [@lizzie](https://github.com/lizzie)
+or donate to my wife [@lizzie](https://github.com/lizzie)
 
 ![Alipay:shenyan1985@gmail.com, WeChat:SunsetSunrising](http://hotoo.me/images/donate-lizzie.png)
+
+Thank you.
