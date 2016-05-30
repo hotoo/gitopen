@@ -454,6 +454,8 @@ describe('$ gitopen', function () {
     ['pr base-branch...compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch'],
     ['pr base/branch...compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
     ['pulls', '/hotoo/gitopen/pulls'],
+    ['prs', '/hotoo/gitopen/pulls'],
+    ['mrs', '/hotoo/gitopen/pulls'],
     ['pulls new', '/hotoo/gitopen/compare'],
     ['!1', '/hotoo/gitopen/pulls/1'],
     ['pr1', '/hotoo/gitopen/pulls/1'],
