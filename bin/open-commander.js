@@ -150,6 +150,8 @@ module.exports = function(argv, option) {
     }
     break;
   case 'pulls':
+  case 'prs':
+  case 'mrs':
     options.category = 'pulls';
     if (commander.args[1] === 'new') {
       options.category = 'pulls/new';
