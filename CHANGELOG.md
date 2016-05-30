@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.4.2 (2016-06-30)
+
+* `gitopen pulls` alias: `gitopen prs`, `gitopen mrs`. #34
+
 ## 2.4.1 (2015-08-15)
 
 * #28, fixed bitbucket's commit scheme config.
