@@ -62,7 +62,7 @@ $ gitopen issues                # https://github.com/hotoo/gitopen/issues
 $ gitopen #1                    # https://github.com/hotoo/gitopen/issues/1
 $ gitopen pr                    # New a pull-request
 $ gitopen !1                    # Open merge/pull request by id.
-$ gitopen pulls                 # https://github.com/hotoo/gitopen/pulls
+$ gitopen prs                   # https://github.com/hotoo/gitopen/pulls, alias gitopen pulls, gitopen mrs
 $ gitopen wiki                  # Open wiki pages.
 $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
