@@ -378,7 +378,7 @@ describe('gitremote()', function () {
 
 describe('$ cd non-git-dir && gitopen', function () {
   it('$ gitopen @hotoo', function (done) {
-    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose @hotoo', function(err, stdout) {
+    child_process.exec('./gitopen/bin/gitopen --verbose @hotoo', {cwd: '..'}, function(err, stdout) {
       should(err).not.be.ok();
       stdout.should.be.containEql('URL: https://github.com/hotoo\n');
       done();
@@ -386,7 +386,7 @@ describe('$ cd non-git-dir && gitopen', function () {
   });
 
   it('$ gitopen @hotoo/gitopen', function (done) {
-    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose @hotoo/gitopen', function(err, stdout) {
+    child_process.exec('./gitopen/bin/gitopen --verbose @hotoo/gitopen', {cwd: '..'}, function(err, stdout) {
       should(err).not.be.ok();
       stdout.should.be.containEql('URL: https://github.com/hotoo/gitopen\n');
       done();
@@ -394,7 +394,7 @@ describe('$ cd non-git-dir && gitopen', function () {
   });
 
   it('$ gitopen snippet', function (done) {
-    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose snippet', function(err, stdout) {
+    child_process.exec('./gitopen/bin/gitopen --verbose snippet', {cwd: '..'}, function(err, stdout) {
       should(err).not.be.ok();
       stdout.should.be.containEql('URL: https://gist.github.com/\n');
       done();
@@ -402,7 +402,7 @@ describe('$ cd non-git-dir && gitopen', function () {
   });
 
   it('$ gitopen #1    SHOULD ERROR', function (done) {
-    child_process.exec('cd .. && ./gitopen/bin/gitopen --verbose "#1"', function(err) {
+    child_process.exec('./gitopen/bin/gitopen --verbose "#1"', {cwd: '..'}, function(err) {
       should(err).be.ok();
       done();
     });
@@ -499,7 +499,7 @@ describe('$ gitopen', function () {
   git_command_case_in_subdir.forEach(function(testcase) {
     var cmd = testcase[0] ? ' ' + testcase[0] : '';
     it('$ cd bin && gitopen' + cmd, function (done) {
-      child_process.exec('cd bin && ./gitopen --verbose' + cmd, function(err, stdout) {
+      child_process.exec('./gitopen --verbose' + cmd, {cwd: './bin'}, function(err, stdout) {
         should(err).not.be.ok();
         stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://github.com' + testcase[1]) + '\n');
         done();
@@ -522,7 +522,7 @@ describe('$ hgopen', function () {
     hg_command_case.forEach(function(testcase) {
       var cmd = testcase[0] ? ' "' + testcase[0] + '"' : '';
       it('$ hgopen' + cmd, function (done) {
-        child_process.exec('cd test/hgssh && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
+        child_process.exec('../../bin/hgopen --verbose' + cmd, {cwd: 'test/hgssh'}, function(err, stdout) {
           should(err).not.be.ok();
           stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://bitbucket.org' + testcase[1]) + '\n');
           done();
@@ -535,7 +535,7 @@ describe('$ hgopen', function () {
     hg_command_case.forEach(function(testcase) {
       var cmd = testcase[0] ? ' "' + testcase[0] + '"' : '';
       it('$ hgopen' + cmd, function (done) {
-        child_process.exec('cd test/hghttp && ../../bin/hgopen --verbose' + cmd, function(err, stdout) {
+        child_process.exec('../../bin/hgopen --verbose' + cmd, {cwd: 'test/hghttp'}, function(err, stdout) {
           should(err).not.be.ok();
           stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://bitbucket.org' + testcase[1]) + '\n');
           done();

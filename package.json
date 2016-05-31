@@ -32,7 +32,8 @@
   "dependencies": {
     "commander": "^2.8.1",
     "deepmerge": "~0.2.10",
-    "js-yaml": "^3.3.1"
+    "js-yaml": "^3.3.1",
+    "inquirer": "^1.0.3"
   },
   "devDependencies": {
     "coveralls": "^2.11.3",
