@@ -12,40 +12,43 @@ var hgroot = hgremote.getHgRootPath(cwd);
 // 1. commander
 // 2. if help then print help.
 // 3. if version then print version.
-var command = commander(process.argv, {
+commander(process.argv, {
   cwd: cwd,
   cwb: cwb,
   root: hgroot,
-});
-// 4. if @profile then open @profile
-if (command.category === 'profile') {
-  var username = command.args.username;
-  var reponame = command.args.reponame;
-  var url = 'https://github.com/' + username + (reponame? '/'+reponame : '');
-  if (command.verbose) {
-    console.log("URL:", url);
+}, function(command) {
+
+  // 4. if @profile then open @profile
+  if (command.category === 'profile') {
+    var username = command.args.username;
+    var reponame = command.args.reponame;
+    var url = 'https://github.com/' + username + (reponame? '/'+reponame : '');
+    if (command.verbose) {
+      console.log("URL:", url);
+      process.exit(0);
+      return 0;
+    }
+    xopen(url);
     process.exit(0);
     return 0;
   }
-  xopen(url);
-  process.exit(0);
-  return 0;
-}
 
-// 5. git/hg/svn remote url.
-var uri = hgremote.getRemoteUrl({cwd:process.cwd()});
-// 6. get openrc
-var config = getConfig(uri);
-command.scheme = config.scheme;
-command.protocol = config.protocol;
-// 6. resolve paths.
-var url = gitresolve(uri, command);
-// 7. open
-if (command.verbose) {
-  console.log("Option:", command)
-  console.log("URL:", url);
-} else {
-  xopen(url);
-}
+  // 5. git/hg/svn remote url.
+  var uri = hgremote.getRemoteUrl({cwd:process.cwd()});
+  // 6. get openrc
+  var config = getConfig(uri);
+  command.scheme = config.scheme;
+  command.protocol = config.protocol;
+  // 6. resolve paths.
+  var url = gitresolve(uri, command);
+  // 7. open
+  if (command.verbose) {
+    console.log("Option:", command)
+    console.log("URL:", url);
+  } else {
+    xopen(url);
+  }
+
+});
 
 // vim:ft=javascript
