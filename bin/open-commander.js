@@ -2,6 +2,8 @@
 var fs = require('fs');
 var path = require('path');
 var commander = require('commander');
+var child_process = require('child_process');
+var inquirer = require('inquirer');
 
 // resolve absolute path to relative path base repository root.
 function resolve(filepath, cwd, root) {
@@ -11,7 +13,7 @@ function resolve(filepath, cwd, root) {
 
 // @param {argv} process.argv
 // @param {String} cwb, current working branch name.
-module.exports = function(argv, option) {
+module.exports = function(argv, option, callback) {
 
   function parseFilePath(options, cpath) {
     try {
@@ -148,6 +150,36 @@ module.exports = function(argv, option) {
         'branch-B': commander.args[2] || option.cwb,
       };
     }
+
+    var RE_REMOTE_BRANCH_NAME = /^(\w+)\/(.+)/;
+    var cwd = commander.cwd || process.cwd();
+    var remoteBranches = child_process.execSync(
+        'git branch -r',
+        {cwd: cwd}
+      ).toString()
+      .trim()
+      .split(/\r\n|\r|\n/)
+      .map(function(branchName) { return branchName.trim(); })
+      .filter(function(branchName) {
+        return branchName.replace(RE_REMOTE_BRANCH_NAME, '$2') !== option.cwb &&
+          branchName.indexOf(' -> ') === -1; // `  origin/HEAD -> origin/master`
+      });
+
+    if (!options.args['branch-A'] && remoteBranches.length > 1) {
+      inquirer.prompt([{
+        name: 'remoteBranch',
+        type: 'list',
+        message: 'Choose remote brance to compare:',
+        choices: remoteBranches,
+      }]).then(function(answers) {
+        var br = answers.remoteBranch;
+        var m = RE_REMOTE_BRANCH_NAME.exec(br);
+        options.args['branch-A'] = m[2];
+        return callback(options);
+      });
+      return;
+    }
+
     break;
   case 'pulls':
   case 'prs':
@@ -280,5 +312,5 @@ module.exports = function(argv, option) {
     return 1;
   }
 
-  return options;
+  return callback(options);
 };
