@@ -1,7 +1,11 @@
 
 # CHANGELOG
 
-## 2.4.2 (2016-06-30)
+## 2.5.0 (2016-06-01)
+
+* better open pull request way. You can choose remote branch by option menu. #35
+
+## 2.4.2 (2016-05-30)
 
 * `gitopen pulls` alias: `gitopen prs`, `gitopen mrs`. #34
 
