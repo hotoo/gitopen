@@ -9,7 +9,10 @@ MOCHA_OPTS =
 install:
 	@npm install
 
-test:
+lint:
+	@./node_modules/.bin/eslint bin lib test
+
+test: lint
 	@if [ ! -d $(HG_SSH_DIR) ]; then \
 		mkdir -p $(HG_SSH_DIR);  \
 		cd $(HG_SSH_DIR);  \

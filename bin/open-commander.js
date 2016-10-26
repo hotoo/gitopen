@@ -1,3 +1,5 @@
+'use strict';
+
 /* global module, process */
 var fs = require('fs');
 var path = require('path');
@@ -17,7 +19,7 @@ module.exports = function(argv, option, callback) {
 
   function parseFilePath(options, cpath) {
     try {
-      var stat = fs.statSync(cpath); //throw error when cpath is not accessable.
+      var stat = fs.statSync(cpath); // throw error when cpath is not accessable.
 
       var filepath = resolve(cpath, option.cwd, option.root);
       if (stat.isFile()) {
@@ -113,11 +115,11 @@ module.exports = function(argv, option, callback) {
   var category = commander.args[0];
   var match;
 
-  switch(category){
+  switch (category) {
   case 'issue':
     options.category = 'issues/new';
     options.args = {
-      title: commander.args.slice(1).join(' ')
+      title: commander.args.slice(1).join(' '),
     };
     break;
   case 'issues':
@@ -200,7 +202,7 @@ module.exports = function(argv, option, callback) {
   case 'milestone':
     options.category = 'milestones/new';
     options.args = {
-      title: commander.args.slice(1).join(' ')
+      title: commander.args.slice(1).join(' '),
     };
     break;
   case 'milestones':
@@ -229,11 +231,11 @@ module.exports = function(argv, option, callback) {
     break;
   case 'ci':
   case 'commit':
-    //options.category = 'commit';
-    //if (commander.args[2] && commander.args[2] !== '.') {
-      //options.hash = commander.args[2];
-    //}
-    //break;
+    // options.category = 'commit';
+    // if (commander.args[2] && commander.args[2] !== '.') {
+      // options.hash = commander.args[2];
+    // }
+    // break;
   case 'commits':
     options.category = 'commits';
     if (commander.branch) {
@@ -301,7 +303,6 @@ module.exports = function(argv, option, callback) {
       if (!parseFilePath(options, category)) {
         console.error('Unknow category or path: ' + category);
         process.exit(1);
-        return 1;
       }
     }
   }
@@ -309,8 +310,7 @@ module.exports = function(argv, option, callback) {
   if (commander.path && !parseFilePath(options, commander.path)) {
     console.error('Unknow path: ' + commander.path);
     process.exit(1);
-    return 1;
   }
 
-  return callback(options);
+  callback(options);
 };
