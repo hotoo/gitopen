@@ -85,7 +85,7 @@ module.exports = function(argv, option, callback) {
 
   var options = {
     category: 'home',
-    cwd: path.dirname(commander.path) || option.cwd || process.cwd(),
+    cwd: commander.path ? path.dirname(commander.path) : option.cwd || process.cwd(),
     hash: commander.branch || option.cwb || 'master',
     remote: commander.remote || 'origin',
     protocol: 'https',
