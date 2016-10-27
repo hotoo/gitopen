@@ -1,3 +1,4 @@
+'use strict';
 /* global process, module */
 
 var fs = require('fs');
@@ -29,7 +30,7 @@ function openrc(uri) {
   if (fs.existsSync(gitopenrc)) {
     try {
       config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
-      Object.keys(config).some(function(hostname){
+      Object.keys(config).some(function(hostname) {
         if (HOSTNAME === hostname) {
           result.protocol = config[hostname].protocol || 'https';
           result.type = config[hostname].type;
