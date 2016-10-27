@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.5.1 (2016-10-27)
+
+* fix(path.dirname): path.dirname(undefined) throw error since node v6. #40, #41
+
 ## 2.5.0 (2016-06-01)
 
 * better open pull request way. You can choose remote branch by option menu. #35
