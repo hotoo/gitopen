@@ -11,10 +11,6 @@ module.exports = {
     protocol: "https",
     type: "bitbucket"
   },
-  "gitcafe.com": {
-    protocol: "https",
-    type: "gitcafe"
-  },
   "git.oschina.net": {
     protocol: "https",
     type: "oschina"
