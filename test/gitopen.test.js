@@ -296,6 +296,16 @@ describe('gitresolve()', function() {
       }).should.be.eql('https://' + test[1] + '/commits?branch=br');
     });
 
+    it('gitresolve(' + test[0] + ', {branches})', function() {
+      gitresolve(test[0], {
+        category: 'branches',
+        scheme: {
+          base: '{protocol}://{hostname}/{username}/{reponame}',
+          'branches': '/branches',
+        },
+      }).should.be.eql('https://' + test[1] + '/branches');
+    });
+
     it('gitresolve(' + test[0] + ', {home})', function() {
       gitresolve(test[0], {
         category: 'home',
@@ -473,6 +483,8 @@ describe('$ gitopen', function() {
     ['commit', '/hotoo/gitopen/commits'],
     ['commits', '/hotoo/gitopen/commits'],
     ['ed8d9e3', '/hotoo/gitopen/commit/ed8d9e3'],
+    ['brs', '/hotoo/gitopen/branches'],
+    ['branches', '/hotoo/gitopen/branches'],
     ['@hotoo', '/hotoo'],
     ['@hotoo/gitopen', '/hotoo/gitopen'],
     ['snippet', 'https://gist.github.com/'],
