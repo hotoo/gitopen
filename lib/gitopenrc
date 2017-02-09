@@ -18,5 +18,9 @@ module.exports = {
   "coding.com": {
     protocol: "https",
     type: "coding"
-  }
+  },
+  "code.csdn.net": {
+    protocol: "https",
+    type: "csdn"
+  },
 };
