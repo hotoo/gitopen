@@ -31,7 +31,7 @@ and
 * [GitHub](https://github.com/)
 * [GitLab](https://gitlab.com/)
 * [BitBucket](https://bitbucket.org/)
-* [GitCafe](https://gitcafe.com/)
+* ~~[GitCafe](https://gitcafe.com/)~~ Merged into coding.net.
 * [OSC](https://git.oschina.net/)
 * [Coding](https://coding.net/)
 * Custom
@@ -83,13 +83,13 @@ $ gitopen @hotoo/gitopen        # https://github.com/hotoo/gitopen
 
 Default support [github.com](https://github.com/),
 [bitbucket.org](https://bitbucket.org/), [gitlab.com](https://gitlab.com/),
-[gitcafe.com](https://gitcafe.com/), [git.oschina.net](https://git.oschina.net/)
+~~[gitcafe.com](https://gitcafe.com/)~~, [git.oschina.net](https://git.oschina.net/)
 and [coding.net](https://coding.net/).
 
 If you use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
 [Atlassian Stash](https://www.atlassian.com/software/stash),
-[GitCafe Enterprise](https://enterprise.gitcafe.com/)
+~~[GitCafe Enterprise](https://enterprise.gitcafe.com/)~~
 or other custom web system build you owner git server, you need config like:
 
 ~/.gitopenrc
