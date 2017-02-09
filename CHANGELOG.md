@@ -1,6 +1,11 @@
 
 # CHANGELOG
 
+## 2.5.2 (2017-02-09)
+
+- feat: Add `gitopen branches` command.
+- feat: Delete gitcafe(merged into coding.net).
+
 ## 2.5.1 (2016-10-27)
 
 * fix(path.dirname): path.dirname(undefined) throw error since node v6. #40, #41

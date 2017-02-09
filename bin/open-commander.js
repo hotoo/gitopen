@@ -64,6 +64,7 @@ module.exports = function(argv, option, callback) {
       console.log('    {directory}                  Open directory by given branch, default is current working branch.');
       console.log('    wiki                         Open wiki page');
       console.log('    commits                      Open commits list page, alias `ci`');
+      console.log('    branches                     Open branches list page, alias `brs` and `branchs`');
       console.log('    tags                         Open tags list page');
       console.log('    milestones                   Open milestones list page');
       console.log('    milestones#1                 Open milestones by id');
