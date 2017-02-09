@@ -1,10 +1,14 @@
 
 # CHANGELOG
 
+## 2.6.0 (2017-02-09)
+
+- feat: Support code.csdn.net #46
+
 ## 2.5.2 (2017-02-09)
 
-- feat: Add `gitopen branches` command.
-- feat: Delete gitcafe(merged into coding.net).
+- feat: Add `gitopen branches` command. #44
+- feat: Delete gitcafe(merged into coding.net). #45
 
 ## 2.5.1 (2016-10-27)
 
