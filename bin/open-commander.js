@@ -242,6 +242,11 @@ module.exports = function(argv, option, callback) {
       options.category = 'commits-with-branch';
     }
     break;
+  case 'brs':
+  case 'branchs':
+  case 'branches':
+    options.category = 'branches';
+    break;
   case 'gist':
   case 'snip':
   case 'snippet':
