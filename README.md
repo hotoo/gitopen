@@ -32,8 +32,9 @@ and
 * [GitLab](https://gitlab.com/)
 * [BitBucket](https://bitbucket.org/)
 * ~~[GitCafe](https://gitcafe.com/)~~ Merged into coding.net.
-* [OSC](https://git.oschina.net/)
 * [Coding](https://coding.net/)
+* [OSC](https://git.oschina.net/)
+* [CSDN](https://code.csdn.net/)
 * Custom
 
 If you use [GitBucket](https://github.com/takezoe/gitbucket),
@@ -85,9 +86,12 @@ $ gitopen @hotoo/gitopen        # https://github.com/hotoo/gitopen
 ## Configuration
 
 Default support [github.com](https://github.com/),
-[bitbucket.org](https://bitbucket.org/), [gitlab.com](https://gitlab.com/),
-~~[gitcafe.com](https://gitcafe.com/)~~, [git.oschina.net](https://git.oschina.net/)
-and [coding.net](https://coding.net/).
+[bitbucket.org](https://bitbucket.org/),
+[gitlab.com](https://gitlab.com/),
+~~[gitcafe.com](https://gitcafe.com/)~~,
+[coding.net](https://coding.net/)
+[git.oschina.net](https://git.oschina.net/)
+and [CSDN](https://code.csdn.net/).
 
 If you use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
