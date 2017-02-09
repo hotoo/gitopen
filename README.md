@@ -66,7 +66,10 @@ $ gitopen prs                   # https://github.com/hotoo/gitopen/pulls, alias 
 $ gitopen wiki                  # Open wiki pages.
 $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
-$ gitopen commits               # Open commits pages.
+$ gitopen commits               # Open commits page.
+$ gitopen brs                   # Open branches page.
+$ gitopen branchs               # Open branches page.
+$ gitopen branches              # Open branches page.
 $ gitopen {hash}                # Open commit page by hash code.
 
 $ gitopen README.md             # Open remote blob url. default use current working branch.
