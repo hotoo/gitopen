@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.7.0 (2017-02-22)
+
+- feat: Auto get base branch for create PR/MR. #47, #48
+
 ## 2.6.0 (2017-02-09)
 
 - feat: Support code.csdn.net #46

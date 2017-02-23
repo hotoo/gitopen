@@ -89,7 +89,7 @@ Default support [github.com](https://github.com/),
 [bitbucket.org](https://bitbucket.org/),
 [gitlab.com](https://gitlab.com/),
 ~~[gitcafe.com](https://gitcafe.com/)~~,
-[coding.net](https://coding.net/)
+[coding.net](https://coding.net/),
 [git.oschina.net](https://git.oschina.net/)
 and [CSDN](https://code.csdn.net/).
 
