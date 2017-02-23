@@ -1,6 +1,12 @@
 {
+  "globals": {
+    "module": true,
+    "exports": true,
+    "process": true,
+    "child_process": true
+  },
   "ecmaFeatures": {
-    "jsx": true
+    "jsx": false
   },
   "parser": "espree",
   "env": {

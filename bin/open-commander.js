@@ -1,11 +1,10 @@
 'use strict';
 
-/* global module, process */
 var fs = require('fs');
 var path = require('path');
 var commander = require('commander');
-var child_process = require('child_process');
-var inquirer = require('inquirer');
+// var inquirer = require('inquirer');
+var gitremote = require('../lib/gitremote');
 
 // resolve absolute path to relative path base repository root.
 function resolve(filepath, cwd, root) {
@@ -154,33 +153,35 @@ module.exports = function(argv, option, callback) {
       };
     }
 
-    var RE_REMOTE_BRANCH_NAME = /^(\w+)\/(.+)/;
-    var cwd = commander.cwd || process.cwd();
-    var remoteBranches = child_process.execSync(
-        'git branch -r',
-        {cwd: cwd}
-      ).toString()
-      .trim()
-      .split(/\r\n|\r|\n/)
-      .map(function(branchName) { return branchName.trim(); })
-      .filter(function(branchName) {
-        return branchName.replace(RE_REMOTE_BRANCH_NAME, '$2') !== option.cwb &&
-          branchName.indexOf(' -> ') === -1; // `  origin/HEAD -> origin/master`
-      });
-
-    if (!options.args['branch-A'] && remoteBranches.length > 1) {
-      inquirer.prompt([{
-        name: 'remoteBranch',
-        type: 'list',
-        message: 'Choose remote brance to compare:',
-        choices: remoteBranches,
-      }]).then(function(answers) {
-        var br = answers.remoteBranch;
-        var m = RE_REMOTE_BRANCH_NAME.exec(br);
-        options.args['branch-A'] = m[2];
-        return callback(options);
-      });
-      return;
+    if (!options.args['branch-A']) {
+      var cwd = commander.cwd || process.cwd();
+      var remoteBranches = gitremote.getBaseBranches(cwd);
+      var remoteBranchLength = remoteBranches.length;
+      if (remoteBranchLength === 0) {
+        console.log('Not found base branch, rebase it before create PR/MR.');
+        return;
+        // remoteBranches = gitremote.getRemoteBranches(cwd)
+          // .map(function(br) {
+            // return br.name;
+          // })
+          // .filter(function(name) {
+            // return name !== option.cwb;
+          // });
+      }
+      // TODO: 目前这个分支走不到，后面获取所有的祖先分支列表时再供用户选择。
+      // if (remoteBranchLength > 1) {
+        // inquirer.prompt([{
+          // name: 'remoteBranch',
+          // type: 'list',
+          // message: 'Choose remote brance to compare:',
+          // choices: remoteBranches,
+        // }]).then(function(answers) {
+          // options.args['branch-A'] = answers.remoteBranch;
+          // return callback(options);
+        // });
+        // return;
+      // }
+      options.args['branch-A'] = remoteBranches[0];
     }
 
     break;
