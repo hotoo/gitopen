@@ -63,14 +63,12 @@ $ gitopen issues                # https://github.com/hotoo/gitopen/issues
 $ gitopen #1                    # https://github.com/hotoo/gitopen/issues/1
 $ gitopen pr                    # New a pull-request
 $ gitopen !1                    # Open merge/pull request by id.
-$ gitopen prs                   # https://github.com/hotoo/gitopen/pulls, alias gitopen pulls, gitopen mrs
+$ gitopen prs                   # https://github.com/hotoo/gitopen/pulls, alias `pulls`, `mrs`.
 $ gitopen wiki                  # Open wiki pages.
 $ gitopen release               # Open releases page.
 $ gitopen tags                  # Open tags page.
 $ gitopen commits               # Open commits page.
-$ gitopen brs                   # Open branches page.
-$ gitopen branchs               # Open branches page.
-$ gitopen branches              # Open branches page.
+$ gitopen brs                   # Open branches page, alias `branchs` and `branches`.
 $ gitopen {hash}                # Open commit page by hash code.
 
 $ gitopen README.md             # Open remote blob url. default use current working branch.
