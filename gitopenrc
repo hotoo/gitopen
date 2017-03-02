@@ -1,0 +1,9 @@
+gitlab.alibaba-inc.com:
+  type: gitlab
+  protocol: http
+gitlab-oss.alibaba-inc.com:
+  type: gitlab
+  protocol: http
+gitlab.alipay-inc.com:
+  type: gitlab
+  protocol: http
