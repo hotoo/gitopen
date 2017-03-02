@@ -97,7 +97,7 @@ If you use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
 [Atlassian Stash](https://www.atlassian.com/software/stash),
 ~~[GitCafe Enterprise](https://enterprise.gitcafe.com/)~~
-or other custom web system build you owner git server, you need config like:
+you need config like:
 
 ~/.gitopenrc
 
@@ -108,6 +108,15 @@ github.company.com:
 gitlab.company.net:
   type: gitlab
   protocol: http
+```
+
+- `github.company.com`, `gitlab.company.net` is you git web server domain.
+  - `type` is the type of you git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `oschina`, `csdn`.
+  - `protocol`: protocol of you git web server, `http` or `https`.
+
+Else if you use other custom web system build you owner git server, you need config like:
+
+```yaml
 git.example.com:
   type: custom
   protocol: http
