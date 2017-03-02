@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.7.1 (2017-03-02)
+
+- feat: Useful error message for user.
+
 ## 2.7.0 (2017-02-22)
 
 - feat: Auto get base branch for create PR/MR. #47, #48
