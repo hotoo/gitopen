@@ -45,10 +45,15 @@ function openrc(uri) {
       });
       return result;
     } catch (ex) {
-      console.error('Read .gitopenrc error: %s', ex.message);
+      console.error('Read %s error: %s', gitopenrc, ex.message);
       process.exit(1);
-      return 1;
+      return {};
     }
+  } else {
+    console.error('Not found gitopenrc file: %s', gitopenrc);
+    console.error('Please read [Configuration](https://github.com/hotoo/gitopen#configuration) for more information.');
+    process.exit(1);
+    return {};
   }
 }
 
