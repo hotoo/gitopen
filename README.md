@@ -70,6 +70,7 @@ $ gitopen tags                  # Open tags page.
 $ gitopen commits               # Open commits page.
 $ gitopen brs                   # Open branches page, alias `branchs` and `branches`.
 $ gitopen {hash}                # Open commit page by hash code.
+$ gitopen search keyword        # Open search page
 
 $ gitopen README.md             # Open remote blob url. default use current working branch.
 $ gitopen README.md -b branch   # Open remote blob url by given branch.
