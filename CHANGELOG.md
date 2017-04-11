@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.7.2 (2017-04-11)
+
+- [fixed]: getBaseBranch when commit message with square brackets. #52
+
 ## 2.7.1 (2017-03-02)
 
 - feat: Useful error message for user.
