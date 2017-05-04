@@ -161,9 +161,9 @@ describe('gitresolve()', function() {
         args: {'pull_id': '1'},
         scheme: {
           base: '{protocol}://{hostname}/{username}/{reponame}',
-          'pulls/id': '/pulls/{pull-id}',
+          'pulls/id': '/pull/{pull-id}',
         },
-      }).should.be.eql('https://' + test[1] + '/pulls/1');
+      }).should.be.eql('https://' + test[1] + '/pull/1');
     });
 
     it('gitresolve(' + test[0] + ', {pulls/new})', function() {
@@ -468,17 +468,17 @@ describe('$ gitopen', function() {
     ['prs', '/hotoo/gitopen/pulls'],
     ['mrs', '/hotoo/gitopen/pulls'],
     ['pulls new', '/hotoo/gitopen/compare'],
-    ['!1', '/hotoo/gitopen/pulls/1'],
-    ['pr1', '/hotoo/gitopen/pulls/1'],
-    ['pr:1', '/hotoo/gitopen/pulls/1'],
-    ['pr-1', '/hotoo/gitopen/pulls/1'],
-    ['pr/1', '/hotoo/gitopen/pulls/1'],
-    ['pr@1', '/hotoo/gitopen/pulls/1'],
-    ['mr1', '/hotoo/gitopen/pulls/1'],
-    ['mr:1', '/hotoo/gitopen/pulls/1'],
-    ['mr-1', '/hotoo/gitopen/pulls/1'],
-    ['mr/1', '/hotoo/gitopen/pulls/1'],
-    ['mr@1', '/hotoo/gitopen/pulls/1'],
+    ['!1', '/hotoo/gitopen/pull/1'],
+    ['pr1', '/hotoo/gitopen/pull/1'],
+    ['pr:1', '/hotoo/gitopen/pull/1'],
+    ['pr-1', '/hotoo/gitopen/pull/1'],
+    ['pr/1', '/hotoo/gitopen/pull/1'],
+    ['pr@1', '/hotoo/gitopen/pull/1'],
+    ['mr1', '/hotoo/gitopen/pull/1'],
+    ['mr:1', '/hotoo/gitopen/pull/1'],
+    ['mr-1', '/hotoo/gitopen/pull/1'],
+    ['mr/1', '/hotoo/gitopen/pull/1'],
+    ['mr@1', '/hotoo/gitopen/pull/1'],
     ['ci', '/hotoo/gitopen/commits'],
     ['commit', '/hotoo/gitopen/commits'],
     ['commits', '/hotoo/gitopen/commits'],
