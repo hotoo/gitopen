@@ -1,7 +1,7 @@
 {
   "name": "gitopen",
-  "version": "2.7.2",
-  "description": "Open Remote from Browser.",
+  "version": "2.7.3",
+  "description": "Open git remote url from web browser.",
   "main": "lib/index.js",
   "bin": {
     "gitopen": "bin/gitopen",

@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 2.7.3 (2017-05-04)
+
+- fix(github): Open PR by id in github. #56
+
 ## 2.7.2 (2017-04-11)
 
 - [fixed]: getBaseBranch when commit message with square brackets. #52

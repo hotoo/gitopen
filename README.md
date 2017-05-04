@@ -12,7 +12,7 @@
 [coveralls-badge]: https://coveralls.io/repos/hotoo/gitopen/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/r/hotoo/gitopen
 
-Open git/hg/svn remote from browser.
+Open git/hg/svn remote url from web browser.
 
 Support:
 
