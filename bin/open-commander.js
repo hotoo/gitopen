@@ -107,7 +107,7 @@ module.exports = function(argv, option, callback) {
 
   var RE_ISSUE_ID = /^#\d+$/;
   var RE_PR_ID = /^(?:!|(?:pr|mr)[\-:\/#@]?)(\d+)$/i;
-  var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9-_]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
+  var RE_PROFILE = /^@([a-z0-9-_]+)(?:\/([a-z0-9\-_.]+)(?:#\d+|:\w+|\/\w+)?)?$/i;
   var RE_MILESTONE = /^milestones?[@\/:#\-](.+)$/i;
   var RE_GIST = /^(?:gist|snippet|snip)(?:@(.+))?$/i;
   // branch-a:branch-b
