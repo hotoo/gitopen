@@ -13,7 +13,10 @@ function resolve(filepath, cwd, root) {
 }
 
 // @param {argv} process.argv
-// @param {String} cwb, current working branch name.
+// @param {Object} option, current working branch name.
+//    - {String} cwd: current working directory,
+//    - {String} cwb: current working branch name.
+//    - {String} root: git repo root directory.
 module.exports = function(argv, option, callback) {
 
   function parseFilePath(options, cpath) {
