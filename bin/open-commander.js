@@ -66,6 +66,7 @@ module.exports = function(argv, option, callback) {
       console.log('    {directory}                  Open directory by given branch, default is current working branch.');
       console.log('    wiki                         Open wiki page');
       console.log('    commits                      Open commits list page, alias `ci`');
+      console.log('    blame <filePath>             Open file blame information page.');
       console.log('    branches                     Open branches list page, alias `brs` and `branchs`');
       console.log('    tags                         Open tags list page');
       console.log('    milestones                   Open milestones list page');
@@ -246,6 +247,13 @@ module.exports = function(argv, option, callback) {
     if (commander.branch) {
       options.category = 'commits-with-branch';
     }
+    break;
+  case 'blame':
+    options.category = 'blame';
+    options.branch = commander.branch || option.cwb;
+    options.args = {
+      path: commander.args[1],
+    };
     break;
   case 'brs':
   case 'branchs':

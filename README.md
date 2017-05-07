@@ -112,7 +112,7 @@ gitlab.company.net:
   - `type` is the type of you git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `oschina`, `csdn`.
   - `protocol`: protocol of you git web server, `http` or `https`.
 
-Else if you use other custom web system build you owner git server, you need config like:
+Else if you are using other custom web system build you owner git server, you need config like:
 
 ```yaml
 git.example.com:
@@ -189,6 +189,10 @@ alias:
 * `$ gitopen mr#1`
 
 support `@`, `/`, `#`, `:`, `-` or without sparator.
+
+### $ gitopen blame path/to/file
+
+Open file blame information page.
 
 ### $ gitopen commits
 

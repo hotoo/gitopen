@@ -483,6 +483,8 @@ describe('$ gitopen', function() {
     ['ci', '/hotoo/gitopen/commits'],
     ['commit', '/hotoo/gitopen/commits'],
     ['commits', '/hotoo/gitopen/commits'],
+    ['blame path/to/file', '/hotoo/gitopen/blame/' + cwb + '/path/to/file'],
+    ['blame -b branch-name path/to/file', '/hotoo/gitopen/blame/branch-name/path/to/file'],
     ['ed8d9e3', '/hotoo/gitopen/commit/ed8d9e3'],
     ['brs', '/hotoo/gitopen/branches'],
     ['branches', '/hotoo/gitopen/branches'],
