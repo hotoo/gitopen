@@ -1,6 +1,15 @@
 
 # CHANGELOG
 
+## 2.8.0 (2017-10-01)
+
+- feat: check update.
+- feat: gitopen blame.
+- feat: alias cis -> commits.
+- fix: encode branch name.
+- fix: support branch name with dot.
+- fix: replace multiple times schema placeholder.
+
 ## 2.7.3 (2017-05-04)
 
 - fix(github): Open PR by id in github. #56
