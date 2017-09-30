@@ -50,6 +50,7 @@ commander(process.argv, {
   }
   // 6. get openrc
   var config = getConfig(uri);
+  command.type = config.type;
   command.scheme = config.scheme;
   command.protocol = config.protocol;
   // 6. resolve paths.
