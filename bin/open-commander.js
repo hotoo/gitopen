@@ -242,9 +242,11 @@ module.exports = function(argv, option, callback) {
       // options.hash = commander.args[2];
     // }
     // break;
+  case 'cis':
   case 'commits':
     options.category = 'commits';
     if (commander.branch) {
+      options.cwb = option.cwb;
       options.category = 'commits-with-branch';
     }
     break;
