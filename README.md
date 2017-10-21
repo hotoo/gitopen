@@ -37,8 +37,8 @@ and
 * [CSDN](https://code.csdn.net/)
 * Custom
 
-If you use [GitBucket](https://github.com/takezoe/gitbucket),
-[tell me](https://github.com/hotoo/gitopen/issues/new).
+If you are use [GitBucket](https://github.com/takezoe/gitbucket),
+[tell me please](https://github.com/hotoo/gitopen/issues/new).
 
 ## Install
 
@@ -91,7 +91,7 @@ Default support [github.com](https://github.com/),
 [git.oschina.net](https://git.oschina.net/)
 and [CSDN](https://code.csdn.net/).
 
-If you use [GitHub Enterprise](https://enterprise.github.com/),
+If you are use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
 [Atlassian Stash](https://www.atlassian.com/software/stash),
 ~~[GitCafe Enterprise](https://enterprise.gitcafe.com/)~~
@@ -108,11 +108,11 @@ gitlab.company.net:
   protocol: http
 ```
 
-- `github.company.com`, `gitlab.company.net` is you git web server domain.
-  - `type` is the type of you git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `oschina`, `csdn`.
-  - `protocol`: protocol of you git web server, `http` or `https`.
+- `github.company.com`, `gitlab.company.net` is your company's git web server domain name.
+  - `type` is the type of your company's git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `oschina`, `csdn`.
+  - `protocol`: protocol of your company's git web server, `http` or `https`.
 
-Else if you are using other custom web system build you owner git server, you need config like:
+Else if you are using other custom web system build your owner git server, you need config like:
 
 ```yaml
 git.example.com:
