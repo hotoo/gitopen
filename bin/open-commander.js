@@ -246,7 +246,8 @@ module.exports = function(argv, option, callback) {
   case 'cis':
   case 'commits':
     options.category = 'commits';
-    if (commander.branch) {
+    // if (commander.branch) {
+    if (option.cwb) {
       options.cwb = option.cwb;
       options.category = 'commits-with-branch';
     }
