@@ -86,7 +86,11 @@ module.exports = function(argv, option, callback) {
       console.log();
     })
     .parse(argv);
-
+  
+  if (argv.includes("-branch")) {
+    commander.branch = argv[argv.indexOf("-branch") + 1];
+  }
+  
   var options = {
     category: 'home',
     cwd: commander.path ? path.dirname(commander.path) : option.cwd || process.cwd(),
