@@ -349,10 +349,10 @@ If this tool is useful for you, please [Star this repository](https://github.com
 
 And maybe you want to donate me via Alipay / WeChat:
 
-![Alipay:hotoo.cn@gmail.com, WeChat:hotoome](http://hotoo.me/images/donate-hotoo.png)
+![Alipay:hotoo.cn@gmail.com, WeChat:hotoome](https://hotoo.github.io/images/donate-hotoo.png)
 
 or donate to my wife [@lizzie](https://github.com/lizzie)
 
-![Alipay:shenyan1985@gmail.com, WeChat:SunsetSunrising](http://hotoo.me/images/donate-lizzie.png)
+![Alipay:shenyan1985@gmail.com, WeChat:SunsetSunrising](https://hotoo.github.io/images/donate-lizzie.png)
 
 Thank you.
