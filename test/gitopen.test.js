@@ -389,6 +389,14 @@ describe('gitremote()', function() {
     });
   });
 
+  // git remote name
+  it('gitremote.getRemoteName({remote: "test"})', function() {
+    resolve(gitremote.getRemoteName({remote: 'test'})).should.be.eql('test');
+  });
+
+  it('gitremote.getRemoteName()', function() {
+    resolve(gitremote.getRemoteName()).should.be.eql('origin');
+  });
 });
 
 describe('$ cd non-git-dir && gitopen', function() {
@@ -510,14 +518,6 @@ describe('$ gitopen', function() {
     });
   });
 
-  it('$ gitopen --remote gitlab', function(done) {
-    child_process.exec('./bin/gitopen --verbose --remote gitlab', function(err, stdout) {
-      should(err).not.be.ok();
-      stdout.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
-      done();
-    });
-  });
-
   var git_command_case_in_subdir = [
     ['../README.md :master', '/hotoo/gitopen/blob/master/README.md'],
     ['../README.md -b master', '/hotoo/gitopen/blob/master/README.md'],
@@ -530,6 +530,27 @@ describe('$ gitopen', function() {
       child_process.exec('./gitopen --verbose' + cmd, {cwd: './bin'}, function(err, stdout) {
         should(err).not.be.ok();
         stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://github.com' + testcase[1]) + '\n');
+        done();
+      });
+    });
+  });
+
+
+  it('$ gitopen --remote gitlab', function(done) {
+    child_process.exec('./bin/gitopen --verbose --remote gitlab', function(err, stdout) {
+      should(err).not.be.ok();
+      stdout.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
+      done();
+    });
+  });
+
+  it('gitopen with .gitconfig setting gitopen.remote', function(done) {
+    child_process.exec('git config gitopen.remote gitlab', {cwd: '.'}, function(err/* , stdout */) {
+      should(err).not.be.ok();
+
+      child_process.exec('./bin/gitopen --verbose', function(errOpen, stdoutOpen) {
+        should(errOpen).not.be.ok();
+        stdoutOpen.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
         done();
       });
     });
