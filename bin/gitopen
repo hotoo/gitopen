@@ -38,7 +38,10 @@ commander(process.argv, {
   // 5. git/hg/svn remote url.
   var uri;
   try {
-    uri = gitremote.getRemoteUrl({cwd: process.cwd()});
+    uri = gitremote.getRemoteUrl({
+      cwd: process.cwd(),
+      remote: command.remote,
+    });
   } catch (ex) {
     if (command.category === 'snippets/new') {
       uri = 'https://github.com/hotoo/gitopen';

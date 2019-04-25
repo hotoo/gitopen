@@ -381,8 +381,12 @@ describe('gitremote()', function() {
     resolve(gitremote.getRemoteUrl({cwd: '.'})).should.be.eql('github.com/hotoo/gitopen');
   });
 
-  it('gitremote.getRemoteUrl({remote})', function() {
+  it('gitremote.getRemoteUrl({remote})', function(done) {
     resolve(gitremote.getRemoteUrl({remote: 'origin'})).should.be.eql('github.com/hotoo/gitopen');
+    child_process.exec('git remote add gitlab git@gitlab.com:hotoo/gitopen.git', {cwd: '.'}, function(/* err, stdout */) {
+      resolve(gitremote.getRemoteUrl({remote: 'gitlab'})).should.be.eql('gitlab.com/hotoo/gitopen');
+      done();
+    });
   });
 
 });
@@ -460,11 +464,11 @@ describe('$ gitopen', function() {
     ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
     ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
     ['pull compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
-    ['pr base-branch:compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch'],
-    ['pr base/branch:compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
-    ['pr base-branch...compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch'],
-    ['pr base/branch...compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch'],
-    ['pr base/branch+name...compare/branch#name', '/hotoo/gitopen/compare/base/branch%2Bname...compare/branch%23name'],
+    ['pr base-branch:compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch?expand=1'],
+    ['pr base/branch:compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch?expand=1'],
+    ['pr base-branch...compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch?expand=1'],
+    ['pr base/branch...compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch?expand=1'],
+    ['pr base/branch+name...compare/branch#name', '/hotoo/gitopen/compare/base/branch%2Bname...compare/branch%23name?expand=1'],
     ['pulls', '/hotoo/gitopen/pulls'],
     ['prs', '/hotoo/gitopen/pulls'],
     ['mrs', '/hotoo/gitopen/pulls'],
@@ -503,6 +507,14 @@ describe('$ gitopen', function() {
         stdout.should.be.containEql('URL: ' + (RE_URL.test(testcase[1]) ? testcase[1] : 'https://github.com' + testcase[1]) + '\n');
         done();
       });
+    });
+  });
+
+  it('$ gitopen --remote gitlab', function(done) {
+    child_process.exec('./bin/gitopen --verbose --remote gitlab', function(err, stdout) {
+      should(err).not.be.ok();
+      stdout.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
+      done();
     });
   });
 
