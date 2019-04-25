@@ -95,9 +95,31 @@ If you are use [GitHub Enterprise](https://enterprise.github.com/),
 [GitLab Community Edition (CE), GitLab Enterprise Edition (EE)](https://gitlab.org/),
 [Atlassian Stash](https://www.atlassian.com/software/stash),
 ~~[GitCafe Enterprise](https://enterprise.gitcafe.com/)~~
-you need config like:
+You need config in ~/.gitconfig file:
 
-~/.gitopenrc
+```
+[gitopen "github.company.com"]
+	type = github
+	protocol = https
+[gitopen "gitlab.company.net"]
+	type = gitlab
+	protocol = http
+```
+
+You can config it by git command-line:
+
+```bash
+; global
+$ git config --global gitopen.github.company.com.type github
+$ git config --global gitopen.github.company.com.protocol https
+
+; set local repo default remote name.
+$ git remote add gitlabRemote git@gitlab.com:hotoo/gitopen.git
+$ git config gitopen.remote gitlabRemote
+```
+
+
+Also you can config it in ~/.gitopenrc file for global settings:
 
 ```yaml
 github.company.com:

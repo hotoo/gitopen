@@ -3,6 +3,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var child_process = require('child_process');
 var yaml = require('js-yaml');
 var gitresolve = require('../lib/index');
 var DEFAULT_CONFIG = require('../lib/gitopenrc');
@@ -13,7 +14,7 @@ function getUserHome() {
 
 var $HOME = getUserHome();
 
-function openrc(uri) {
+function openrc(uri, options) {
   var HOSTNAME = gitresolve.parse(uri).hostname;
   var config = DEFAULT_CONFIG[HOSTNAME];
 
@@ -25,36 +26,75 @@ function openrc(uri) {
     };
   }
 
+  // get config from .gitopenrc
+  var gitopenConfig = {};
   var gitopenrc = path.join($HOME, '.gitopenrc');
-  var result = {};
   if (fs.existsSync(gitopenrc)) {
     try {
       config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
       Object.keys(config).some(function(hostname) {
         if (HOSTNAME === hostname) {
-          result.protocol = config[hostname].protocol || 'https';
-          result.type = config[hostname].type;
+          gitopenConfig.protocol = config[hostname].protocol || 'https';
+          gitopenConfig.type = config[hostname].type;
           var type = config[hostname].type;
           if (type === 'custom') {
-            result.scheme = config[hostname].scheme || {};
+            gitopenConfig.scheme = config[hostname].scheme || {};
           } else {
-            result.scheme = require('../lib/scheme/' + config[hostname].type);
+            gitopenConfig.scheme = require('../lib/scheme/' + config[hostname].type);
           }
           return true;
         }
       });
-      return result;
     } catch (ex) {
       console.error('Read %s error: %s', gitopenrc, ex.message);
       process.exit(1);
       return {};
     }
-  } else {
-    console.error('Not found gitopenrc file: %s', gitopenrc);
+  }
+
+  let gitConfig = {};
+  var cwd = options.cwd || process.cwd();
+
+  // parse config from global .gitconfig
+  child_process.execSync(
+    'git config --list --global | grep "^gitopen\\.' + HOSTNAME.replace(/\./g, '\\.') + '\\."',
+    {cwd: cwd}
+  ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
+    var kv = item.split('=');
+    if (kv.length < 2) { return; }
+    var key = kv.shift().trim().replace('gitopen.' + HOSTNAME + '.', '');
+    var val = kv.join('=').trim();
+    gitConfig[key] = val;
+  });
+
+  // parse config from local repo .gitconfig
+  child_process.execSync(
+    'git config --list --local | grep "^gitopen\\."',
+    {cwd: cwd}
+  ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
+    var kv = item.split('=');
+    if (kv.length < 2) { return; }
+    var key = kv.shift().trim().replace(/^gitopen\./, '');
+    var val = kv.join('=').trim();
+    gitConfig[key] = val;
+  });
+
+  // 当 .gitopenrc 中定义为 type=custom，.gitconfig 中定义 type!=custom 时，
+  // 将 schema 改回 .gitconfig 中定义的 scheme 配置。
+  if (gitConfig.type && gitConfig.type !== 'custom') {
+    gitConfig.scheme = require('../lib/scheme/' + gitConfig.type);
+  }
+
+  // 优先使用 gitconfig 的配置。
+  const mergeConfig = Object.assign({}, gitopenConfig, gitConfig);
+
+  if (!mergeConfig.type) {
+    console.error('Not found gitopen configs.');
     console.error('Please read [Configuration](https://github.com/hotoo/gitopen#configuration) for more information.');
     process.exit(1);
-    return {};
   }
+
+  return mergeConfig;
 }
 
 module.exports = openrc;
