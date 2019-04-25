@@ -1,6 +1,12 @@
 
 # CHANGELOG
 
+## 3.0.0 (2019-04-25)
+
+- feat: config in .gitconfig.
+- config: github PR scheme config.
+- feat: support `--remote` bash paramter.
+
 ## 2.8.0 (2017-10-01)
 
 - feat: check update.

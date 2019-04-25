@@ -1,6 +1,6 @@
 {
   "name": "gitopen",
-  "version": "2.8.0",
+  "version": "3.0.0",
   "description": "Open git remote url from web browser.",
   "main": "lib/index.js",
   "bin": {
