@@ -91,7 +91,7 @@ module.exports = function(argv, option, callback) {
     category: 'home',
     cwd: commander.path ? path.dirname(commander.path) : option.cwd || process.cwd(),
     hash: commander.branch || option.cwb || 'master',
-    remote: commander.remote || 'origin',
+    remote: commander.remote,
     protocol: 'https',
     verbose: commander.verbose,
   };

@@ -36,11 +36,16 @@ commander(process.argv, {
   }
 
   // 5. git/hg/svn remote url.
+  var remote = gitremote.getRemoteName({
+    cwd: process.cwd(),
+    remote: command.remote,
+  });
+
   var uri;
   try {
     uri = gitremote.getRemoteUrl({
       cwd: process.cwd(),
-      remote: command.remote,
+      remote,
     });
   } catch (ex) {
     if (command.category === 'snippets/new') {
@@ -52,10 +57,14 @@ commander(process.argv, {
     }
   }
   // 6. get openrc
-  var config = getConfig(uri);
+  var config = getConfig(uri, {
+    cwd: process.cwd(),
+    remote,
+  });
   command.type = config.type;
   command.scheme = config.scheme;
   command.protocol = config.protocol;
+  command.remote = remote;
   // 6. resolve paths.
   url = gitresolve(uri, command);
   // 7. open
