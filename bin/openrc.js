@@ -56,28 +56,32 @@ function openrc(uri, options) {
   var cwd = options.cwd || process.cwd();
 
   // parse config from global .gitconfig
-  child_process.execSync(
-    'git config --list --global | grep "^gitopen\\.' + HOSTNAME.replace(/\./g, '\\.') + '\\."',
-    {cwd: cwd}
-  ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
-    var kv = item.split('=');
-    if (kv.length < 2) { return; }
-    var key = kv.shift().trim().replace('gitopen.' + HOSTNAME + '.', '');
-    var val = kv.join('=').trim();
-    gitConfig[key] = val;
-  });
+  try {
+    child_process.execSync(
+      'git config --list --global | grep "^gitopen\\.' + HOSTNAME.replace(/\./g, '\\.') + '\\."',
+      {cwd: cwd}
+    ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
+      var kv = item.split('=');
+      if (kv.length < 2) { return; }
+      var key = kv.shift().trim().replace('gitopen.' + HOSTNAME + '.', '');
+      var val = kv.join('=').trim();
+      gitConfig[key] = val;
+    });
+  } catch (ex) { /* */ }
 
   // parse config from local repo .gitconfig
-  child_process.execSync(
-    'git config --list --local | grep "^gitopen\\."',
-    {cwd: cwd}
-  ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
-    var kv = item.split('=');
-    if (kv.length < 2) { return; }
-    var key = kv.shift().trim().replace(/^gitopen\./, '');
-    var val = kv.join('=').trim();
-    gitConfig[key] = val;
-  });
+  try {
+    child_process.execSync(
+      'git config --list --local | grep "^gitopen\\."',
+      {cwd: cwd}
+    ).toString().trim().split(/\r\n|\r|\n/).forEach(item => {
+      var kv = item.split('=');
+      if (kv.length < 2) { return; }
+      var key = kv.shift().trim().replace(/^gitopen\./, '');
+      var val = kv.join('=').trim();
+      gitConfig[key] = val;
+    });
+  } catch (ex) { /* */ }
 
   // 当 .gitopenrc 中定义为 type=custom，.gitconfig 中定义 type!=custom 时，
   // 将 schema 改回 .gitconfig 中定义的 scheme 配置。
