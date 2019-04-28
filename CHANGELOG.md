@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 3.0.1 (2019-04-28)
+
+- fixed #73
+
 ## 3.0.0 (2019-04-25)
 
 - feat: config in .gitconfig.
