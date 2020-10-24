@@ -91,7 +91,7 @@ Default support [github.com](https://github.com/),
 [gitlab.com](https://gitlab.com/),
 ~~[gitcafe.com](https://gitcafe.com/)~~,
 [coding.net](https://coding.net/),
-[git.oschina.net](https://git.oschina.net/)
+[git.oschina.net](https://git.oschina.net/),
 [AntCode](https://code.alipay.com/)
 and [CSDN](https://code.csdn.net/).
 
