@@ -23,4 +23,8 @@ module.exports = {
     protocol: "https",
     type: "csdn"
   },
+  "code.alipay.com": {
+    protocol: "https",
+    type: "antcode"
+  },
 };
