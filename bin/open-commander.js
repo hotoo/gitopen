@@ -9,7 +9,7 @@ var gitremote = require('../lib/gitremote');
 // resolve absolute path to relative path base repository root.
 function resolve(filepath, cwd, root) {
   return path.normalize(path.join(cwd, filepath))
-            .replace(root, '');
+    .replace(root, '');
 }
 
 // @param {argv} process.argv
@@ -165,25 +165,25 @@ module.exports = function(argv, option, callback) {
         console.log('Not found base branch, rebase it before create PR/MR.');
         return;
         // remoteBranches = gitremote.getRemoteBranches(cwd)
-          // .map(function(br) {
-            // return br.name;
-          // })
-          // .filter(function(name) {
-            // return name !== option.cwb;
-          // });
+        // .map(function(br) {
+        // return br.name;
+        // })
+        // .filter(function(name) {
+        // return name !== option.cwb;
+        // });
       }
       // TODO: 目前这个分支走不到，后面获取所有的祖先分支列表时再供用户选择。
       // if (remoteBranchLength > 1) {
-        // inquirer.prompt([{
-          // name: 'remoteBranch',
-          // type: 'list',
-          // message: 'Choose remote brance to compare:',
-          // choices: remoteBranches,
-        // }]).then(function(answers) {
-          // options.args['branch-A'] = answers.remoteBranch;
-          // return callback(options);
-        // });
-        // return;
+      // inquirer.prompt([{
+      // name: 'remoteBranch',
+      // type: 'list',
+      // message: 'Choose remote brance to compare:',
+      // choices: remoteBranches,
+      // }]).then(function(answers) {
+      // options.args['branch-A'] = answers.remoteBranch;
+      // return callback(options);
+      // });
+      // return;
       // }
       options.args['branch-A'] = remoteBranches[0];
     }
@@ -237,11 +237,6 @@ module.exports = function(argv, option, callback) {
     break;
   case 'ci':
   case 'commit':
-    // options.category = 'commit';
-    // if (commander.args[2] && commander.args[2] !== '.') {
-      // options.hash = commander.args[2];
-    // }
-    // break;
   case 'cis':
   case 'commits':
     options.category = 'commits';

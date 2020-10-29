@@ -9,7 +9,7 @@
     "hgopen": "bin/hgopen"
   },
   "scripts": {
-    "test": "make test"
+    "lint": "eslint --fix bin lib test"
   },
   "repository": {
     "type": "git",

@@ -370,8 +370,8 @@ describe('gitremote()', function() {
   var RE_GIT_EXT = /\.git$/i;
   function resolve(uri) {
     return uri.replace(RE_PROTOCOL, '')
-              .replace(':', '/')
-              .replace(RE_GIT_EXT, '');
+      .replace(':', '/')
+      .replace(RE_GIT_EXT, '');
   }
   it('gitremote.getRemoteUrl()', function() {
     resolve(gitremote.getRemoteUrl()).should.be.eql('github.com/hotoo/gitopen');

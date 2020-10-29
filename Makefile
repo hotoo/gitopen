@@ -6,11 +6,8 @@ REPORTER = spec
 TIMEOUT = 15000
 MOCHA_OPTS =
 
-install:
-	@npm install
-
 lint:
-	@./node_modules/.bin/eslint bin lib test
+	@npm run lint
 
 test: lint
 	@if [ ! -d $(HG_SSH_DIR) ]; then \
@@ -42,4 +39,4 @@ publish:
 	@git tag $(version)
 	@git push origin $(version)
 
-.PHONY: test publish coverage install
+.PHONY: test publish coverage
