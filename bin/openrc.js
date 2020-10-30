@@ -1,5 +1,4 @@
 'use strict';
-/* global process, module */
 
 var fs = require('fs');
 var path = require('path');
@@ -44,6 +43,7 @@ function openrc(uri, options) {
           }
           return true;
         }
+        return false;
       });
     } catch (ex) {
       console.error('Read %s error: %s', gitopenrc, ex.message);

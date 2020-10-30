@@ -51,6 +51,7 @@ commander(process.argv, {
     xopen(url);
   }
 
+  return 0;
 });
 
 // 每天检查一次更新。

@@ -9,7 +9,8 @@
     "hgopen": "bin/hgopen"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "lint": "eslint --fix bin lib test"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.3",
-    "eslint": "^1.10.3",
+    "eslint": "^6.6.0",
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
     "should": "^7.0.1"
