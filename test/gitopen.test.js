@@ -397,6 +397,49 @@ describe('gitremote()', function() {
   it('gitremote.getRemoteName()', function() {
     resolve(gitremote.getRemoteName()).should.be.eql('origin');
   });
+
+
+  describe('gitremote.parseBaseBranchName()', function() {
+    it('gitremote.parseBaseBranchName(1)', function() {
+      const showBranch = `* [feat/hand-guide] feat: hand guide
+ ! [master] sprint_demo_S915482907_20200903_merge_master:Merge branch 'sprint_demo_S915482907_20200903' into 'master'
+  ! [sprint_demo_3_3_S916642948_20201022] PullRequest: something.
+   ! [v3.3] PullRequest: 314 nothing
+----
+*    [feat/hand-guide] feat: hand guide
+ -   [master] sprint_demo_S915482907_20200903_merge_master:Merge branch 'sprint_demo_S915482907_20200903' into 'master'
+---- [sprint_demo_3_3_S916642948_20201022] PullRequest: 314 something`;
+      gitremote.parseBaseBranchName(showBranch).should.be.eql(['sprint_demo_3_3_S916642948_20201022']);
+    });
+
+    it('gitremote.parseBaseBranchName(2)', function() {
+      const showBranch = `! [develop-1] master 2
+ ! [develop-2] feat: 2-1
+  ! [feat/1-1] master 2
+   ! [feat/2-1] feat: 2-1
+    * [feat/2-2] feat: 2-2
+     ! [master] master 2
+------
+    *  [feat/2-2] feat: 2-2
+ + +*  [develop-2] feat: 2-1
+++++*+ [develop-1] master 2`;
+      gitremote.parseBaseBranchName(showBranch).should.be.eql(['develop-2', 'develop-1']);
+    });
+
+    it('gitremote.parseBaseBranchName(3)', function() {
+      const showBranch = `! [develop-1] master 2
+ ! [develop-2] feat: 2-1
+  * [feat/1-1] master 2
+   ! [feat/2-1] feat: 2-1
+    ! [feat/2-2] feat: 2-2
+     ! [master] master 2
+------
+    +  [feat/2-2] feat: 2-2
+ + ++  [develop-2] feat: 2-1
+++*+++ [develop-1] master 2`;
+      gitremote.parseBaseBranchName(showBranch).should.be.eql(['develop-1']);
+    });
+  });
 });
 
 describe('$ cd non-git-dir && gitopen', function() {
