@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var merge = require('deepmerge');
 var path = require('path');
 var child_process = require('child_process');
 var yaml = require('js-yaml');
@@ -13,10 +14,17 @@ function getUserHome() {
 
 var $HOME = getUserHome();
 
+/**
+ * 获取 gitopen 配置。
+ * @param {String} uri Git remote 地址。
+ * @param {Object} options gitopen 传入的配置，例如当前目录 cwd。
+ * @return {Object} 返回 gitopen 配置信息。
+ */
 function openrc(uri, options) {
   var HOSTNAME = gitresolve.parse(uri).hostname;
   var config = DEFAULT_CONFIG[HOSTNAME];
 
+  // 命中内置的 gitopenrc 中对应域名的配置，直接返回。
   if (config) {
     return {
       type: config.type,
@@ -25,7 +33,7 @@ function openrc(uri, options) {
     };
   }
 
-  // get config from .gitopenrc
+  // get config from ~.gitopenrc
   var gitopenConfig = {};
   var gitopenrc = path.join($HOME, '.gitopenrc');
   if (fs.existsSync(gitopenrc)) {
@@ -37,9 +45,12 @@ function openrc(uri, options) {
           gitopenConfig.type = config[hostname].type;
           var type = config[hostname].type;
           if (type === 'custom') {
+            // 完全自定义类型的 gitopen
             gitopenConfig.scheme = config[hostname].scheme || {};
           } else {
-            gitopenConfig.scheme = require('../lib/scheme/' + config[hostname].type);
+            // 内置类型的 gitopen 配置，但是可以覆盖部分 scheme 配置。
+            const gitopenConfigScheme = require('../lib/scheme/' + config[hostname].type);
+            gitopenConfig.scheme = merge(merge({}, gitopenConfigScheme), config[hostname].scheme);
           }
           return true;
         }
@@ -89,8 +100,8 @@ function openrc(uri, options) {
     gitConfig.scheme = require('../lib/scheme/' + gitConfig.type);
   }
 
-  // 优先使用 gitconfig 的配置。
-  const mergeConfig = Object.assign({}, gitopenConfig, gitConfig);
+  // 优先使用 gitopenConfig 的配置。
+  const mergeConfig = merge(merge({}, gitConfig), gitopenConfig);
 
   if (!mergeConfig.type) {
     console.error('Not found gitopen configs.');
