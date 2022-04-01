@@ -10,6 +10,17 @@ lint:
 	@npm run lint
 
 test: lint
+	@./node_modules/.bin/istanbul cover \
+	./node_modules/.bin/_mocha \
+		-- \
+		--harmony \
+		--reporter $(REPORTER) \
+		--timeout $(TIMEOUT) \
+		--require should \
+		--inline-diffs \
+		$(TESTS)
+
+testHg:
 	@if [ ! -d $(HG_SSH_DIR) ]; then \
 		mkdir -p $(HG_SSH_DIR);  \
 		cd $(HG_SSH_DIR);  \
@@ -24,15 +35,6 @@ test: lint
 		echo [paths] >> .hg/hgrc;  \
 		echo default = https://hotoo@bitbucket.org/hotoo/gitopen >> .hg/hgrc;  \
 	fi
-	@./node_modules/.bin/istanbul cover \
-	./node_modules/.bin/_mocha \
-		-- \
-		--harmony \
-		--reporter $(REPORTER) \
-		--timeout $(TIMEOUT) \
-		--require should \
-		--inline-diffs \
-		$(TESTS)
 
 publish:
 	@npm publish

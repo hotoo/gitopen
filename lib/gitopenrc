@@ -11,9 +11,13 @@ module.exports = {
     protocol: "https",
     type: "bitbucket"
   },
+  "gitee.com": {
+    protocol: "https",
+    type: "gitee"
+  },
   "git.oschina.net": {
     protocol: "https",
-    type: "oschina"
+    type: "gitee"
   },
   "coding.com": {
     protocol: "https",
