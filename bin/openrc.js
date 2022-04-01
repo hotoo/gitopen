@@ -47,6 +47,9 @@ function openrc(uri, options) {
           if (type === 'oschina') {
             type = 'gitee';
             console.warn('The type of "oschina" is deprecated, please use "gitee" in ~/.gitopenrc file.');
+          } else if (type === 'csdn') {
+            type = 'gitcode';
+            console.warn('The type of "csdn" is deprecated, please use "gitcode" in ~/.gitopenrc file.');
           }
           gitopenConfig.type = type;
           if (type === 'custom') {
@@ -63,8 +66,7 @@ function openrc(uri, options) {
       });
     } catch (ex) {
       console.error('Read %s error: %s', gitopenrc, ex.message);
-      process.exit(1);
-      return {};
+      return process.exit(1);
     }
   }
 
@@ -101,15 +103,19 @@ function openrc(uri, options) {
 
   // 当 .gitopenrc 中定义为 type=custom，.gitconfig 中定义 type!=custom 时，
   // 将 schema 改回 .gitconfig 中定义的 scheme 配置。
-  if (gitConfig.type && gitConfig.type !== 'custom') {
-    var type = gitConfig.type;
+  var type = gitConfig.type;
+  if (type && type !== 'custom') {
     // oschina 更名为 gitee，做兼容，用户可以保持配置为 oschina
     if (type === 'oschina') {
       type = 'gitee';
       console.warn('The type of "oschina" is deprecated, please use "gitee" in git config.');
       console.warn('Try to execute command "git config gitopen.type gitee" in terminal.');
+    } else if (type === 'csdn') {
+      type = 'gitcode';
+      console.warn('The type of "csdn" is deprecated, please use "gitcode" in git config.');
+      console.warn('Try to execute command "git config gitopen.type gitcode" in terminal.');
     }
-    gitConfig.scheme = require('../lib/scheme/' + gitConfig.type);
+    gitConfig.scheme = require('../lib/scheme/' + type);
   }
 
   // 优先使用 gitopenConfig 的配置。
