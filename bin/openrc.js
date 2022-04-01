@@ -46,7 +46,7 @@ function openrc(uri, options) {
           // oschina 更名为 gitee，做兼容，用户可以保持配置为 oschina
           if (type === 'oschina') {
             type = 'gitee';
-            console.warn('The type of "oschina" is deprecated, please use "gitee" in ~/.gitopenrc file.')
+            console.warn('The type of "oschina" is deprecated, please use "gitee" in ~/.gitopenrc file.');
           }
           gitopenConfig.type = type;
           if (type === 'custom') {
@@ -102,11 +102,12 @@ function openrc(uri, options) {
   // 当 .gitopenrc 中定义为 type=custom，.gitconfig 中定义 type!=custom 时，
   // 将 schema 改回 .gitconfig 中定义的 scheme 配置。
   if (gitConfig.type && gitConfig.type !== 'custom') {
+    var type = gitConfig.type;
     // oschina 更名为 gitee，做兼容，用户可以保持配置为 oschina
     if (type === 'oschina') {
       type = 'gitee';
       console.warn('The type of "oschina" is deprecated, please use "gitee" in git config.');
-      console.warn('Try to execute command "git config gitopen.type gitee" in terminal.')
+      console.warn('Try to execute command "git config gitopen.type gitee" in terminal.');
     }
     gitConfig.scheme = require('../lib/scheme/' + gitConfig.type);
   }

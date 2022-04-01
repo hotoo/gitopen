@@ -385,7 +385,8 @@ describe('gitremote()', function() {
     resolve(gitremote.getRemoteUrl({remote: 'origin'})).should.be.eql('github.com/hotoo/gitopen');
     child_process.exec('git remote add gitlab git@gitlab.com:hotoo/gitopen.git', {cwd: '.'}, function(/* err, stdout */) {
       resolve(gitremote.getRemoteUrl({remote: 'gitlab'})).should.be.eql('gitlab.com/hotoo/gitopen');
-      done();
+
+      child_process.exec('git remote remove gitlab', {}, done);
     });
   });
 
@@ -468,10 +469,14 @@ describe('$ gitopen', function() {
     ['milestone-2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
     ['milestone#2.0.0', '/hotoo/gitopen/issues?q=milestone%3A2.0.0'],
     ['milestone#里程碑', '/hotoo/gitopen/issues?q=milestone%3A%E9%87%8C%E7%A8%8B%E7%A2%91'],
-    ['pr', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
-    ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
-    ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
-    ['pull compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
+    // ['pr', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
+    ['pr', '/hotoo/gitopen/compare/master...' + cwb + '?expand=1'],
+    // ['pull', '/hotoo/gitopen/compare/' + cwb + '?expand=1'],
+    ['pull', '/hotoo/gitopen/compare/master...' + cwb + '?expand=1'],
+    // ['pr compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
+    ['pr compare-branch', '/hotoo/gitopen/compare/master...compare-branch?expand=1'],
+    // ['pull compare-branch', '/hotoo/gitopen/compare/compare-branch?expand=1'],
+    ['pull compare-branch', '/hotoo/gitopen/compare/master...compare-branch?expand=1'],
     ['pr base-branch:compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch?expand=1'],
     ['pr base/branch:compare/branch', '/hotoo/gitopen/compare/base/branch...compare/branch?expand=1'],
     ['pr base-branch...compare-branch', '/hotoo/gitopen/compare/base-branch...compare-branch?expand=1'],
@@ -537,28 +542,29 @@ describe('$ gitopen', function() {
 
 
   it('$ gitopen --remote gitlab', function(done) {
-    child_process.exec('./bin/gitopen --verbose --remote gitlab', function(err, stdout) {
+    child_process.exec('git remote add gitlab git@gitlab.com:hotoo/gitopen.git && ./bin/gitopen --verbose --remote gitlab', function(err, stdout) {
       should(err).not.be.ok();
       stdout.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
-      done();
+      child_process.exec('git remote remove gitlab ', done);
     });
   });
 
   it('gitopen with .gitconfig setting gitopen.remote', function(done) {
-    child_process.exec('git config gitopen.remote gitlab', {cwd: '.'}, function(err/* , stdout */) {
+    child_process.exec('git remote add gitlab git@gitlab.com:hotoo/gitopen.git && git config gitopen.remote gitlab', {cwd: '.'}, function(err/* , stdout */) {
       should(err).not.be.ok();
 
       child_process.exec('./bin/gitopen --verbose', function(errOpen, stdoutOpen) {
         should(errOpen).not.be.ok();
         stdoutOpen.should.be.containEql('URL: https://gitlab.com/hotoo/gitopen\n');
-        done();
+
+        child_process.exec('git remote remove gitlab && git config gitopen.remote origin', {}, done);
       });
     });
   });
 });
 
 
-describe('$ hgopen', function() {
+describe.skip('$ hgopen', function() {
   var hg_command_case = [
     ['', '/hotoo/gitopen'],
     ['#1', '/hotoo/gitopen/issues/1'],
@@ -594,6 +600,6 @@ describe('$ hgopen', function() {
   });
 });
 
-describe('$ svnopen', function() {
+describe.skip('$ svnopen', function() {
   // TODO:
 });

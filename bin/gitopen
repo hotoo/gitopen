@@ -27,12 +27,10 @@ commander(process.argv, {
     url = 'https://github.com/' + username + (reponame ? '/' + reponame : '');
     if (command.verbose) {
       console.log('URL:', url);
-      process.exit(0);
-      return 0;
+      return process.exit(0);
     }
     xopen(url);
-    process.exit(0);
-    return 0;
+    return process.exit(0);
   }
 
   // 5. git/hg/svn remote url.
@@ -52,8 +50,7 @@ commander(process.argv, {
       uri = 'https://github.com/hotoo/gitopen';
     } else {
       console.error('Not in git repository directory');
-      process.exit(1);
-      return 1;
+      return process.exit(1);
     }
   }
   // 6. get openrc
