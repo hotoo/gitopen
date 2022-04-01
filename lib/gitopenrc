@@ -23,9 +23,13 @@ module.exports = {
     protocol: "https",
     type: "coding"
   },
+  "gitcode.net": {
+    protocol: "https",
+    type: "gitcode"
+  },
   "code.csdn.net": {
     protocol: "https",
-    type: "csdn"
+    type: "gitcode"
   },
   "code.alipay.com": {
     protocol: "https",
