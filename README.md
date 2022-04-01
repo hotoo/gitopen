@@ -35,7 +35,7 @@ and
 * [BitBucket](https://bitbucket.org/)
 * ~~[GitCafe](https://gitcafe.com/)~~ Merged into coding.net.
 * [Coding](https://coding.net/)
-* [OSC](https://git.oschina.net/)
+* [gitee](https://gitee.com/)
 * [CSDN](https://code.csdn.net/)
 * [AntCode](https://code.alipay.com/)
 * Custom
@@ -91,7 +91,7 @@ Default support [github.com](https://github.com/),
 [gitlab.com](https://gitlab.com/),
 ~~[gitcafe.com](https://gitcafe.com/)~~,
 [coding.net](https://coding.net/),
-[git.oschina.net](https://git.oschina.net/),
+[gitee.com](https://gitee.com/),
 [AntCode](https://code.alipay.com/)
 and [CSDN](https://code.csdn.net/).
 
@@ -135,7 +135,7 @@ gitlab.company.net:
 ```
 
 - `github.company.com`, `gitlab.company.net` is your company's git web server domain name.
-  - `type` is the type of your company's git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `oschina`, `csdn`, `antcode`.
+  - `type` is the type of your company's git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `gitee`, `csdn`, `antcode`.
   - `protocol`: protocol of your company's git web server, `http` or `https`.
 
 Else if you are using other custom web system build your owner git server, you need config like:
