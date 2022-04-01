@@ -38,7 +38,7 @@ function openrc(uri, options) {
   var gitopenrc = path.join($HOME, '.gitopenrc');
   if (fs.existsSync(gitopenrc)) {
     try {
-      config = yaml.safeLoad(fs.readFileSync(gitopenrc, 'utf8'));
+      config = yaml.load(fs.readFileSync(gitopenrc, 'utf8'));
       Object.keys(config).some(function(hostname) {
         if (HOSTNAME === hostname) {
           gitopenConfig.protocol = config[hostname].protocol || 'https';
