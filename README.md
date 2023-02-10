@@ -367,7 +367,11 @@ Display detail information for debug.
 
 ## FAQ
 
-### xdg-open: not found
+### `xdg-open: not found` in Linux
+
+```bash
+sudo apt-get install xdg-utils --fix-missing
+```
 
 - See [xdg-open command is not working](https://askubuntu.com/questions/704712/in-ubuntu-xdg-open-command-is-not-working)
 
