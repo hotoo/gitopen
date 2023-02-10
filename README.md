@@ -365,6 +365,12 @@ Specify git remote name, default is `origin`.
 
 Display detail information for debug.
 
+## FAQ
+
+### xdg-open: not found
+
+- See [xdg-open command is not working](https://askubuntu.com/questions/704712/in-ubuntu-xdg-open-command-is-not-working)
+
 ## License
 
 [MIT](http://hotoo.mit-license.org/)
