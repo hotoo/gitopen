@@ -37,7 +37,7 @@ testHg:
 	fi
 
 publish:
-	@npm publish
+	@npm publish --registry https://registry.npmjs.org/ --access public
 	@git tag $(version)
 	@git push origin $(version)
 
