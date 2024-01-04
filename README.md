@@ -33,6 +33,7 @@ and
 * [GitHub](https://github.com/)
 * [GitLab](https://gitlab.com/)
 * [BitBucket](https://bitbucket.org/)
+* [Gitea](https://gitea.com/)
 * ~~[GitCafe](https://gitcafe.com/)~~ Merged into coding.net.
 * [Coding](https://coding.net/)
 * [gitee](https://gitee.com/)
@@ -89,6 +90,7 @@ $ gitopen @hotoo/gitopen        # https://github.com/hotoo/gitopen
 Default support [github.com](https://github.com/),
 [bitbucket.org](https://bitbucket.org/),
 [gitlab.com](https://gitlab.com/),
+[gitea.com](https://gitea.com/),
 ~~[gitcafe.com](https://gitcafe.com/)~~,
 [coding.net](https://coding.net/),
 [gitee.com](https://gitee.com/),
@@ -135,7 +137,7 @@ gitlab.company.net:
 ```
 
 - `github.company.com`, `gitlab.company.net` is your company's git web server domain name.
-  - `type` is the type of your company's git web server, support `github`, `gitlab`, `gitbucket`, `coding`, `gitee`, `gitcode`, `antcode`.
+  - `type` is the type of your company's git web server, support `github`, `gitlab`, `gitbucket`, `gitea`, `coding`, `gitee`, `gitcode`, `antcode`.
   - `protocol`: protocol of your company's git web server, `http` or `https`.
 
 Else if you are using other custom web system build your owner git server, you need config like:

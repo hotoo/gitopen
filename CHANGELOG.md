@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+## 3.3.0 (2024-01-04)
+
+- Feature: support [Gitea.com](https://about.gitea.com/)
+
 ## 3.2.0 (2020-11-28)
 
 - Feat: 内置类型也支持部分自定义配置。
